@@ -1,0 +1,193 @@
+/*!
+ *   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+ *
+ *   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+ *
+ *   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+ *   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+ *   properly licensed third party, you do not have any rights to this code.
+ *
+ *   If this code is provided to you under the terms of the AGPLv3:
+ *   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *     FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+ *     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+ *     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+ *     OR LOSS OR CORRUPTION OF DATA.
+ */
+
+@import "../../../styles/variables";
+
+:host {
+  display: block;
+  height: 60px;
+}
+
+.header {
+  z-index: 10;
+  position: fixed;
+  background: $layout-header-bg-color;
+  height: $layout-header-desktop-row-height;
+  max-height: $layout-header-desktop-row-height;
+  line-height: $layout-header-desktop-row-height;
+  width: calc( 100% - #{$side-nav-width} );
+  display: flex;
+  align-content: space-between;
+  transition: width $layout-transition-time ease;
+  border-bottom: 1px solid $layout-header-border-color;
+  box-sizing: border-box;
+}
+
+/deep/{
+  .dss-sidebar-collapsed + .dss-main {
+    .header {
+      width: calc( 100% - #{$side-nav-minimised-width} );
+    }
+  }
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.user-name {
+  height: 34px;
+  cursor: auto;
+}
+
+.user-name:hover {
+  background-color: $white !important;
+}
+
+:host /deep/ .mdl-menu__container {
+  position: fixed;
+}
+
+.mdl-menu {
+  width: 200px;
+}
+
+.mdl-button {
+  color: $dove-gray;
+  font-size: 14px;
+  min-width: 24px;
+
+  &.btn-hwx-secondary:hover {
+    color: $white;
+  }
+}
+
+.actions {
+  margin-left: auto;
+  margin-right: 30px;
+
+  .fa {
+    font-size: 16px;
+  }
+  .fa-caret-down {
+    font-size: 12px;
+  }
+
+  & > .mdl-button {
+    padding: 0px;
+
+    &:hover {
+      background: transparent;
+    }
+  }
+
+  .mdl-menu {
+    width: 300px;
+    clip: auto!important;
+
+    .popup-arrow-up {
+      position: absolute;
+      right: 8px;
+      top: -40px;
+      width: 40px;
+      height: 40px;
+      overflow: hidden;
+
+      &:after {
+        content:"";
+        position:absolute;
+        width: 20px;
+        height: 20px;
+        background: $white;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        top: 30px;
+        left: 10px;
+        box-shadow:-1px -1px 10px -2px rgba(0,0,0,.5);
+      }
+    }
+    .menu-header {
+      border-bottom: 1px solid $gallery-gray;
+      padding: 15px;
+      .hwx-title {
+        line-height: 1;
+        font-size: 16px;
+      }
+    }
+    .menu-body {
+      padding: 15px;
+      line-height: 1;
+      border-bottom: 1px solid $gallery-gray;
+    }
+    .menu-footer {
+      padding: 15px 15px 7px;
+      line-height: 1;
+      text-align: right;
+
+      display: flex;
+      justify-content: space-between;
+    }
+    .mdl-button {
+      height: 32px;
+      z-index: 999;
+      box-sizing: border-box;
+    }
+  }
+
+}
+
+
+:host /deep/ .mdl-menu__container.is-visible {
+  right: 20px!important;
+}
+
+:host /deep/ .mdl-menu__outline {
+  box-shadow: 0 2px 10px 2px rgba(0, 0, 0, .29);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+
+  transition: none;
+}
+
+/* Responsive UI using media queries overwriting MDL's default media queries */
+@media (max-width: 479px) {
+  .mdl-cell--5-col {
+    width: 90%;
+  }
+  .actions {
+    width: 10%;
+    margin-right: 0;
+    position: absolute;
+    right: 0;
+    z-index: 100;
+
+    &:hover {
+      width: 60px;
+      transition: width 200ms;
+    }
+  }
+
+  .mdl-menu .popup-arrow-up {
+    right: 0;
+  }
+}

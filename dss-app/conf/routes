@@ -1,0 +1,156 @@
+#
+# HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+# (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+# This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+# Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+# to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+# properly licensed third party, you do not have any rights to this code.
+# If this code is provided to you under the terms of the AGPLv3:
+# (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+# (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+# LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+# (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+# FROM OR RELATED TO THE CODE; AND
+# (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+# DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+# OR LOSS OR CORRUPTION OF DATA.
+#
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# health
+GET     /health                                               controllers.Status.health
+GET     /metrics                                              controllers.Status.metrics
+
+# Atlas API Search
+# ===========================================
+POST          /api/query-assets                                      controllers.QueryAssets.search(clusterId: String, datasetId: Option[String])
+GET           /api/query-attributes                                  controllers.QueryAttributes.list(clusterId: String)
+
+
+# DatasetTags
+# ===========================================
+GET           /api/dataset-tag/list                                  controllers.DataSets.listCategoriesCount
+GET           /api/dataset-tag/:tagName                              controllers.DataSets.getCategoryCount(tagName: String)
+GET           /api/dataset/:datasetId/atlas-tags                     controllers.DataSets.getUniqueTagsFromAssetsOfDataset(datasetId: String)
+
+GET           /api/assets/auditMockStatus                            controllers.QueryAttributes.checkAuditMockStatus
+GET           /api/assets/details/:clusterId/:atlasGuid              controllers.QueryAttributes.getAssetDetails(clusterId: String, atlasGuid: String)
+GET           /api/assets/details/:clusterId                         controllers.QueryAttributes.getAssetsDetails(clusterId: String, guids: Seq[String])
+GET           /api/assets/typeDefs/:clusterId/:defType               controllers.QueryAttributes.getTypeDefs(clusterId: String, defType: String)
+GET           /api/assets/lineage/:clusterId/:atlasGuid              controllers.QueryAttributes.getLineage(clusterId: String, atlasGuid: String)
+
+# Assets
+# ===========================================
+GET           /api/assets/byguid/:guid                                controllers.Asset.getByGuid(guid: String)
+GET           /api/:clusterId/assets/:assetid/profilerslastrun        controllers.Asset.getProfilersLastRunInfoOnAsset(clusterId: String, assetid: String)
+POST          /api/assets/column/classifications                      controllers.Asset.postAssetColumnClassifications(clusterId: String)
+
+# Datasets
+# ===========================================
+GET           /api/datasets                                          controllers.DataSets.list(name: Option[String])
+POST          /api/datasets                                          controllers.DataSets.create
+PUT           /api/datasets                                          controllers.DataSets.update
+
+GET           /api/datasets/:datasetId                               controllers.DataSets.retrieve(datasetId: String)
+DELETE        /api/datasets/:datasetId                               controllers.DataSets.delete(datasetId: String)
+
+PATCH         /api/datasets/:datasetId                                controllers.DataSets.updateDataset(datasetId : String)
+
+#GET           /api/clusters/:clusterId/hosts                        controllers.Clusters.getHosts(clusterId:Long,ip:Option[String])
+
+# DatasetCategories
+# ===========================================
+GET           /api/datasets/categories                               controllers.DataSets.listAllCategories
+GET           /api/datasets/categories/:search                       controllers.DataSets.searchCategories(search : String, size :Option[Long])
+POST          /api/datasets/categories                               controllers.DataSets.createCategory
+
+
+# Datasets ?
+# ===========================================
+GET           /api/dataset/bynames                                   controllers.DataSets.getDatasetsByName(names: String)
+GET           /api/dataset/:datasetId                                controllers.DataSets.getRichDatasetById(datasetId : String)
+GET           /api/dataset/list                                      controllers.DataSets.getRichDataset
+GET           /api/dataset/list/tag/:tagName                         controllers.DataSets.getRichDatasetByTag(tagName : String)
+
+# Datasets ?
+# ===========================================
+POST          /api/atlas-dataset                                     controllers.DataSets.createDatasetWithAtlasSearch
+POST          /api/add-atlas-assets                                  controllers.DataSets.addAssetsToDataset
+POST          /api/add-selected-atlas-assets                         controllers.DataSets.addSelectedAssetsToDataset
+
+# DatasetAssets
+# ===========================================
+GET           /api/dataset/:datasetId/assets                         controllers.DataSets.getDataAssetsByDatasetId(datasetId: String, queryName: String, offset: Long, limit: Long, state: Option[String])
+DELETE        /api/dataset/:datasetId/allassets                      controllers.DataSets.removeAllAssetsFromDataset(datasetId: Long)
+DELETE        /api/dataset/:datasetId/assets                         controllers.DataSets.removeAssetsFromDataset(datasetId: Long)
+POST          /api/dataset/:datasetId/begin-edit                     controllers.DataSets.beginDatasetEdit(datasetId: Long)
+POST          /api/dataset/:datasetId/save-edit                      controllers.DataSets.saveDatasetEdit(datasetId: Long)
+POST          /api/dataset/:datasetId/cancel-edit                    controllers.DataSets.revertDatasetEdit(datasetId: Long)
+GET           /api/dataset/:clusterId/:datasetName/assetcount        controllers.DataSets.getDatasetProfiledAssetCount(clusterId: String, datasetName: String, profilerInstanceName: String, startTime: Long, endTime: Long)
+
+# DpProfiler
+# ===========================================
+POST          /api/dpProfiler/startJob                                controllers.DpProfilerAttributes.startProfilerJob(clusterId: String, dbName: String, tableName: String)
+GET           /api/dpProfiler/jobStatus                               controllers.DpProfilerAttributes.getProfilerJobStatus(clusterId: String, dbName: String, tableName: String)
+GET           /api/dpProfiler/scheduleStatus                          controllers.DpProfilerAttributes.getScheduleStatus(clusterId: String, dataSetId: String)
+GET           /api/dpProfiler/auditResults                            controllers.DpProfilerAttributes.getAuditResults(clusterId: String, dbName: String, tableName: String, startDate: String, endDate: String, userName: String ?="")
+GET           /api/dpProfiler/auditActions                            controllers.DpProfilerAttributes.getAuditActions(clusterId: String, dbName: String, tableName: String, startDate: String, endDate: String, userName: String ?="")
+POST          /api/dpProfiler/metrics                                 controllers.DpProfilerAttributes.getMetrics(userName: String ?="")
+
+GET           /api/dpProfiler/:clusterId/status-with-jobs-count       controllers.DpProfilerAttributes.getProfilersStatusWithJobSummary(clusterId: String)
+GET           /api/dpProfiler/:clusterId/status-with-assets-count     controllers.DpProfilerAttributes.getProfilersStatusWithAssetsCount(clusterId: String)
+GET           /api/dpProfiler/:clusterId/jobs                         controllers.DpProfilerAttributes.getProfilersJobs(clusterId: String)
+PUT           /api/dpProfiler/:clusterId/profilerinstances/state      controllers.DpProfilerAttributes.putProfilerState(clusterId: String)
+GET           /api/dpProfiler/:clusterId/histories                    controllers.DpProfilerAttributes.getProfilerHistories(clusterId: String)
+GET           /api/dpProfiler/:clusterId/assets                       controllers.DpProfilerAttributes.getExistingProfiledAssetCount(clusterId: String, profilerInstanceName: String)
+GET           /api/dpProfiler/:clusterId/profilerinstances/:name      controllers.DpProfilerAttributes.getProfilerInstanceByName(clusterId: String, name: String)
+PUT           /api/dpProfiler/:clusterId/profilerinstances            controllers.DpProfilerAttributes.updateProfilerInstance(clusterId: String)
+
+
+# Ranger
+# ===========================================
+GET           /api/ranger/audit/:clusterId/:dbName/:tableName         controllers.RangerAttributes.getAuditDetails(clusterId: String, dbName: String, tableName: String, offset: String ?= "0", limit:String ?= "20", accessType:String ?="", accessResult:String ?="")
+GET           /api/ranger/:clusterId/policies                         controllers.RangerAttributes.getPolicyDetails(clusterId: String, offset: Long ?= 0, limit: Long ?= 20, serviceType: String, dbName: Option[String], tableName: Option[String], guid: Option[String])
+
+# comments
+# ===========================================
+POST          /api/comments                                           controllers.Comments.addComments
+GET           /api/comments                                           controllers.Comments.getByObjectRef(objectId: String, objectType: String)
+GET           /api/comments/actions/count                             controllers.Comments.getCommentsCount(objectId: Long, objectType: String)
+DELETE        /api/comments/:id                                       controllers.Comments.deleteCommentById(id: String)
+PATCH         /api/comments/:id                                       controllers.Comments.updateComments(id: String)
+GET           /api/comments/:parentId/replies                         controllers.Comments.getByParentId(parentId: String)
+
+# ratings
+# ===========================================
+POST         /api/ratings                                             controllers.Ratings.add
+GET          /api/ratings                                             controllers.Ratings.get(objectId: String, objectType: String)
+GET          /api/ratings/actions/average                             controllers.Ratings.getAverage(objectId: String, objectType: String)
+PATCH        /api/ratings/:id                                         controllers.Ratings.update(id: String)
+
+#favourites api
+POST        /api/favourites                                           controllers.Favourites.add
+DELETE      /api/favourites/:favId                                    controllers.Favourites.deleteById(favId: Long, objectType: String, objectId: Long)
+
+#bookmarks api
+POST        /api/bookmarks                                            controllers.Bookmarks.add
+DELETE      /api/bookmarks/:bmId                                      controllers.Bookmarks.deleteById(bmId: Long)
+
+
+# others
+# ============================================
+GET           /api/identity                                          controllers.Authentication.userDetail
+GET           /api/roles                                             controllers.Authentication.getAllRoles
+GET           /api/lakes                                             controllers.DataplaneClusters.list
+GET           /api/actions/clusters                                  controllers.actions.DpClusterActions.listWithClusters(type: Option[String])
+
+# Due to the regex involved, Following should be always placed at the end of the file
+# static resources
+# @TODO: Replace `/usr/dlm-web` with env variable DLM_WEB_HOME
+#        which will be set in prod env and will be referred in `StaticAssets.at` method
+GET      /                                                   controllers.StaticAssets.at(path="/usr/dss-web", file="index.html")
+GET     /dss/*file                                           controllers.StaticAssets.at(path="/usr/dss-web", file)
+GET     /*file                                               controllers.StaticAssets.at(path="/usr/dss-web", file)

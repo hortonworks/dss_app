@@ -1,0 +1,155 @@
+/*!
+ *   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+ *
+ *   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+ *
+ *   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+ *   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+ *   properly licensed third party, you do not have any rights to this code.
+ *
+ *   If this code is provided to you under the terms of the AGPLv3:
+ *   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *     FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+ *     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+ *     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+ *     OR LOSS OR CORRUPTION OF DATA.
+ */
+
+@import "../../../../../../../styles/variables";
+
+.tileProxy{
+  background: $white;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 2px 12px rgba(120, 120, 120, .15);
+}
+.tileProxy:hover {
+  background-color: $alabaster;
+}
+
+.dataset-item__action {
+  padding: 5px;
+}
+
+.grapic-holder {
+  position: relative;
+  overflow: hidden;
+}
+.color-0 { background: #cb1e31;}
+.color-1 { background: #5c810e;}
+.color-2 { background: #c912cf;}
+.color-3 { background: #F1605F;}
+.color-4 { background: #2D75EC;}
+.color-5 { background: #dda200;}
+.color-6 { background: #07B573;}
+.color-7 { background: #ffe738;}
+.color-8 { background: #f38725;}
+.color-9 { background: #9a4d31;}
+
+
+.grapic-holder img {
+  min-width: 100%;
+  min-height: 100%;
+  opacity: .3;
+}
+
+.grapic-holder .rating {
+  position: absolute;
+  right: 0;
+  top: 14px;
+  white-space: nowrap;
+  color: #666;
+  background: #fff;
+  border-radius: 8px 0 0 8px;
+  min-width: 40px;
+  padding: 5px;
+  text-align: right;
+  box-shadow: 1px 0 2px #ccc;
+
+  & .fa-star {
+    margin-left: 5px;
+  }
+}
+
+.card-info {
+  padding: 15px;
+  background: #fff;
+  border-bottom: 1px solid #CFD3D7;
+  color: #666;
+}
+
+.tag {
+  background: #54646a;
+  color: #fff;
+  padding: 3px 5px;
+  border-radius: 3px;
+  display: inline-block;
+  margin: 3px;
+  white-space: nowrap;
+  border: 1px solid #2b3336;
+
+  /* REMOVE THIS */
+  text-transform: none;
+}
+
+.hwx-secondary {
+  color: #1eb475;
+}
+.hwx-subtitle {
+  font-size: 16px;
+}
+.right-button {
+  width: 18px;
+  margin-left: auto;
+}
+.info-group {
+  margin: 20px 0 0;
+  line-height: 1.5;
+}
+
+.dataset-action{
+  margin: 0 0 5px;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  display: flex;
+}
+.dataset-name{
+  width: 245px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.button-icon{
+  height: 14px;
+  font-size: 14px;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.marked {
+  color: #fe69a1;
+}
+
+.primary-space {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.flex-grid {
+  padding: 15px;
+  background: #fff;
+  color: #666;
+  display: flex;
+}

@@ -1,0 +1,69 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="dsCreator hwx-white-bg">
+
+	<div class="form-group">
+	  <label for="name" class="required">{{"common.name" | translate}}</label>
+	  <div class="dp-input-and-message-wrapper">
+	    <input type="text" placeholder="Name" #datasetName name="name" id="name" [(ngModel)]="dsModel.name" required dpUniqueDatasetName [ngClass]="{'validation-error': datasetName.invalid && datasetName.errors.unique}" data-se="ds_editor_info_name"/>
+	    <div *ngIf="datasetName.invalid && datasetName.errors.unique" class="error-message">
+	      {{"pages.dataset.ds-editor.errors.unique" | translate}}
+	    </div>
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label for="description" class="required">{{"common.description" | translate}}</label>
+	  <textarea type="text" placeholder="Description" name="description" id="description" [(ngModel)]="dsModel.description" required data-se="ds_editor_info_description"></textarea>
+	</div>
+	<div class="form-group">
+	  <label class="required">{{"common.datalake" | translate}}</label>
+	  <select [(ngModel)]="dsModel.datalakeId" (change)="onLakeSelectionChange()" data-se="ds_editor_info_lake">
+	    <option value="0">Select Datalake</option>
+	    <option *ngFor="let lake of lakes; let i=index" value="{{lake.id}}" [attr.data-se]="'ds_editor_lake_optn_'+(1+i)">{{lake.name}}, {{lake.dcName}}</option>
+	  </select>
+	</div>
+	<div class="form-group">
+	  <label for="tags">{{"common.tags" | translate}}</label>
+	  <div class="hwx-inline-desc">{{"pages.dataset.ds-editor.tagDescription" | translate}}</div>
+	  <tagging-widget id="tags" [tags]="tags"
+	                  [availableTags]="availableTags"
+	                  [clearOnSearch]="true"
+	                  (textChange)="onTagSearchChange($event)"
+	                  (onNewSearch)="onNewTagAddition($event)"
+	  ></tagging-widget>
+	</div>
+	<div class="form-group">
+	  <label class="mdl-switch mdl-js-switch" [ngClass]="{'is-public': (dsModel.sharedStatus === 1)}" for="status-switch">
+	    <input type="checkbox" id="status-switch" class="mdl-switch__input" (change)="onStatusChange()" />
+	    <span class="mdl-switch__label">{{dsModel && (dsModel.sharedStatus === 1)? "Public" : "Private"}}</span>
+	  </label>
+	</div>
+
+
+	<div class="button-container">
+	  <button class="mdl-button btn-hwx-primary" (click)="actionNext()" [disabled]="datasetName.invalid && datasetName.errors.unique" data-se="ds_editor_info_next">{{"pages.dataset.ds-editor.action.next" | translate}}</button>
+	  <button class="mdl-button btn-hwx-default" (click)="actionCancel()" data-se="ds_editor_info_cancle">{{"pages.dataset.ds-editor.action.cancel" | translate}}</button>
+	</div>
+
+	<div class="fillMandatoryMsg" #fillMandatoryMsg>{{"pages.dataset.ds-editor.fillMandatoryMsg" | translate}}</div>
+</div>

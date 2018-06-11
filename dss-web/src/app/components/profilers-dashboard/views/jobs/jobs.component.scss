@@ -1,0 +1,170 @@
+/*!
+ *   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+ *
+ *   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+ *
+ *   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+ *   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+ *   properly licensed third party, you do not have any rights to this code.
+ *
+ *   If this code is provided to you under the terms of the AGPLv3:
+ *   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *     FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+ *     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+ *     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+ *     OR LOSS OR CORRUPTION OF DATA.
+ */
+@import '../../../../../styles/variables';
+@import '../../../../../styles/charts';
+
+
+.flex-grid {
+    display: flex;
+    -webkit-font-smoothing: antialiased;
+}
+
+.flex-side-left {
+    margin-right: 10px;
+}
+
+.flex-main {
+    flex-grow: 1;
+}
+
+.primary-space, .flex-primary {
+    flex-grow: 1;
+}
+
+.section-white {
+    background: #fff;
+    margin: 10px 0;
+}
+
+.section-title {
+    padding: 10px;
+}
+
+.v-line-primary, .v-line-utility {
+    position: relative;
+}
+
+.hwx-subtitle {
+    font-size: 16px;
+    color: #333;
+    margin: 5px 0;
+}
+
+.section-content .section-title {
+    padding: 4px 9px;
+    background: #eee;
+    margin: 1px 1px 0 1px;
+    border-top: 1px solid #fff;
+}
+
+.hwx-subtitle {
+    font-size: 16px;
+    color: #333;
+    margin: 5px 0;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 9px 10px;
+    font-size: 12px;
+}
+table td.numeric-column, table th.numeric-column {
+    text-align: right;
+}
+.sortable-column {
+    cursor: pointer;
+}
+
+.sort-down:after, .sort-up:after, .sortable-column:after {
+    font-family: 'FontAwesome';
+    margin-left: 5px;
+}
+
+.sortable-column:after {
+    content: '\f0dc';
+}
+.sort-down:after {
+    color: #1491c1;
+    content: '\f0dd';
+}
+.sort-up:after {
+    color: #1491c1;
+    content: '\f0de';
+}
+
+.hwx-external {
+    color: #1491C1;
+}
+
+.hwx-error {
+    color: #EF6162;
+}
+
+.hwx-ok {
+    color: #61bb5a;
+}
+
+.tags {
+    display: inline-block;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.tags > span {
+    background: #54646a;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 3px;
+    margin-right: 3px;
+}
+
+.tag > i.fa-times {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.pull-right {
+    float: right;
+}
+
+.duration-control {
+    min-width: 120px;
+    vertical-align: top;
+    background: #fff;
+}
+
+.duration-control {
+    background: transparent;
+    min-width: 0;
+    margin:0px;
+}
+
+ul.duration-control li {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    min-width: 26px;
+    text-align: center;
+    cursor: pointer;
+    list-style: none;
+}
+
+ul.duration-control li + li {
+    margin-left: 5px;
+}
+
+ul.duration-control li.active {
+    background: #444f62;
+    color: #fff;
+}

@@ -1,0 +1,107 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+<router-outlet name="sidebar"></router-outlet>
+<div class="dss-container">
+  <div class="dashboard">
+    <div class="title-container">
+      <div>
+        <div class="hwx-title green">
+          {{dsModel.name}}
+          <span class="flex-summary-item view-icon lock" (click)='onLockClick()' *ngIf="dsModel.sharedStatus && (dsModel.sharedStatus === 2)"><i class="fa fa-lock"></i></span>
+          <span class="flex-summary-item" (click)='onLockClick()' *ngIf="dsModel.sharedStatus && (dsModel.sharedStatus === 1)" [ngClass]="{'view-icon lock': isLoggedInUser(dsModel.creatorId), 'view-icon-lock-disabled': !isLoggedInUser(dsModel.creatorId)}"><i class="fa fa-unlock-alt"></i></span>
+        </div>
+        <div class="hwx-desc"> {{dsModel.description}}</div>
+      </div>
+      <div>
+      <span class="fa-stack fa-sm" style=" border-radius: 12px; background: #eee;" (click)="toggleSummaryWidget()">
+        <i class="fa fa-circle-thin" style=" position: absolute; top: 5px; left: 4px;"></i>
+        <i class="fa fa-circle-thin" style=" position: absolute; top: 6px; left: 9px;"></i>
+        <i class="fa fa-circle-thin" style=" position: absolute; top: 10px; left: 5px;"></i>
+        <i class="fa fa-circle" style=" position: absolute; left: 11px; font-size: 0.6em; top: 3px; color: #EF6162;"></i>
+      </span>
+      </div>
+
+    </div>
+
+    <div class="tabs-container">
+      <dp-tabs [tabEnum]="tabEnum" (selected)="selectedTab=$event"> </dp-tabs>
+    </div>
+
+    <!--<dss-overview *ngIf="selectedTab===tabEnum.OVERVIEW" [clusterId]="dsModel.clusterId"> </dss-overview>-->
+
+    <ds-full-view *ngIf="selectedTab===tabEnum.ASSETS"> </ds-full-view>
+  </div>
+
+  <div class="summaryWidgetCont flex-side flex-side-right hwx-white-bg" [ngClass]="{'showSummary': showSummary}">
+    <div class="grapic-holder" style="height: 83px;">
+      <img *ngIf="dsModel && dsModel.id" src="{{assetPrefix}}/assets/images/collection-banners/dsimg{{dsModel.id%7}}.png">
+      <span class="rating">{{getAggregateValue(dsModel.avgRating).toFixed(1)}}<i class="fa fa-star"></i></span>
+    </div>
+    <div class="flex-grid flex-summary">
+      <div class="flex-summary-item view-icon" (click)='onFavIconClick()'>
+        <i class="fa fa-heart" [ngClass] = "{'marked': dsModel.favouriteId}"></i> <span>{{getAggregateValue(dsModel.favouriteCount)}}</span>
+      </div>
+      <div class="flex-summary-item view-icon" (click)='viewComments()'>
+        <i class="fa fa-comments"></i><span> {{getAggregateValue(dsModel.totalComments)}}</span>
+      </div>
+      <div class="flex-summary-item view-icon" (click)='onBookmarkIconClick()'>
+        <i class="fa fa-bookmark" [ngClass] = "{'marked': dsModel.bookmarkId}"></i>
+      </div>
+    </div>
+    <div class="flex-summary-vertical">
+      <div class="flex-summary-item flex-grid">
+        <div class="utility-space flex-side-left">
+          <i class="fa fa-user-circle-o fa-2x"></i>
+        </div>
+        <div class="primary-space">
+          <span class="key">Created By</span>
+          <span class="value">{{dsModel.creatorName}}</span>
+        </div>
+      </div>
+      <div class="flex-summary-item">
+        <span class="key">Datalake</span>
+        <span class="value">{{dsModel.datalakeName}}</span>
+      </div>
+      <div class="flex-summary-item">
+        <span class="key">Tags</span>
+        <span class="value">
+                  <span class="color-tag color-b" *ngFor="let tag of dsModel.tags">{{tag}}</span>
+              </span>
+      </div>
+      <div class="flex-summary-item" *ngIf="systemTags.length">
+        <span class="key">System Tags</span>
+        <div class="value">
+          <span class="color-tag color-c" *ngFor="let tag of systemTags">{{tag}}</span>
+        </div>
+      </div>
+      <div class="flex-summary-item">
+        <span class="key">Created On</span>
+        <span class="value">{{dsModel.createdOn}}</span>
+      </div>
+      <div class="flex-summary-item">
+        <span class="key">Last Modified</span>
+        <span class="value">{{dsModel.lastModified}}</span>
+      </div>
+    </div>
+  </div>
+
+</div>

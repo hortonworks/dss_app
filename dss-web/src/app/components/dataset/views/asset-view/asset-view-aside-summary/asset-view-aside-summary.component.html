@@ -1,0 +1,109 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+<div class="container">
+  <img src="{{assetPrefix}}/assets/images/hive_table.png">
+  <div class="table-counts">
+    <div class="cards-summary">
+      <i class="fa fa-bars"></i>
+      <div class="value"> {{assetDetails.entity.rowCount}} </div>
+      <div class="title">{{"pages.dataset.asset-view-overview.no-of-rows" | translate}} </div>
+    </div>
+    <div class="cards-summary">
+      <i class="fa fa-bars fa-rotate-90"></i>
+      <div class="value"> {{colCount}}  </div>
+      <div class="title">{{"pages.dataset.asset-view-overview.no-of-columns" | translate}} </div>
+    </div>
+  </div>
+
+  <div class="collapsible-pane">
+    <div class="collapsible-title" (click)="showProperties = !showProperties">
+      <i class="fa fa-angle-right" [ngClass]="{'fa-rotate-90': showProperties}"></i>
+      <span> {{"pages.dataset.asset-view-aside.table-properties" | translate}} </span>
+    </div>
+    <div class="properties" *ngIf="showProperties">
+      <div class="card-summary">
+        <div class="title"> {{"pages.dataset.asset-view-aside.owner" | translate}}</div>
+        <div class="value">{{assetDetails.entity.attributes.owner}}</div>
+      </div>
+      <div class="card-summary">
+        <div class="title"> {{"pages.dataset.asset-view-aside.qualified-name" | translate}}</div>
+        <div class="value">{{assetDetails.entity.attributes.qualifiedName}}</div>
+      </div>
+      <div class="card-summary">
+        <div class="title"> {{"pages.dataset.asset-view-aside.table-type" | translate}}</div>
+        <div class="value">{{assetDetails.entity.attributes.tableType}}</div>
+      </div>
+      <!--<div class="card-summary">-->
+        <!--<div class="title"> {{"pages.dataset.asset-view-aside.datalake" | translate}}</div>-->
+        <!--<div class="value"> USCluster001</div>-->
+      <!--</div>-->
+      <div class="card-summary">
+        <div class="title"> {{"pages.dataset.asset-view-aside.database" | translate}}</div>
+        <div class="value">{{assetDetails.entity.attributes.qualifiedName.split('.')[0]}}</div>
+      </div>
+      <div class="card-summary">
+        <div class="title"> {{"pages.dataset.asset-view-aside.created-on" | translate}}</div>
+        <div class="value">{{assetDetails.entity.createTime | date:'dd MMM yyyy'}}</div>
+      </div>
+      <div class="card-summary">
+        <div class="title"> {{"pages.dataset.asset-view-aside.last-modified" | translate}}</div>
+        <div class="value">{{assetDetails.entity.updateTime | date:'dd MMM yyyy'}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapsible-pane">
+    <div class="collapsible-title" (click)="showTags = !showTags">
+      <i class="fa fa-angle-right" [ngClass]="{'fa-rotate-90': showTags}"></i>
+      <span> {{"pages.dataset.asset-view-aside.system-tags" | translate}} </span>
+    </div>
+    <div class="tags-wrapper" *ngIf="showTags">
+      <div class="asset-tags">
+        <span *ngFor="let tag of suggestedTags" class="tag suggested"> {{ tag | displayDPTag}}</span>
+        <span *ngFor="let tag of acceptedTags" class="tag accepted"> {{ tag | displayDPTag }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapsible-pane">
+    <div class="collapsible-title" (click)="showProfilers = !showProfilers">
+      <i class="fa fa-angle-right" [ngClass]="{'fa-rotate-90': showProfilers}"></i>
+      <span> {{"pages.dataset.asset-view-aside.profilers" | translate}} </span>
+    </div>
+    <div class="profilers" *ngIf="showProfilers">
+      <div class="profilers-container">
+        <div class="profilers-card" *ngFor="let profierAndAssetInfo of profierAndAssetInfos">
+          <div>
+            <div class="profilers-text"> {{profierAndAssetInfo.profilerInfo.displayName}} </div>
+            <div class="profilers-text" [ngClass]="{'active': profierAndAssetInfo.profilerInfo.active, 'disabled': !profierAndAssetInfo.profilerInfo.active}">
+              {{profierAndAssetInfo.profilerInfo.active ? 'Active' : 'Disabled'}}
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="profilers-text"> Last Run </div>
+            <div class="profilers-text"> {{ profierAndAssetInfo.assetInfo.lastUpdated | relativeTime:true }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

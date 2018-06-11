@@ -1,0 +1,135 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="flex-grid">
+						<div class="flex-side flex-side-left" style="min-width: 200px;">
+							<div class="section-white">
+								<div class="section-title flex-grid">
+									<span class="primary-space hwx-subtitle">Clusters</span>
+								</div>
+								<div class="section-content">
+									<table class="mdl-data-table selectable" id="ClusterList">
+										<tbody>
+										<tr *ngFor="let lake of clusters" [class.active]="lake === selectedLake" (click)="selectLake(lake);">
+											<td>{{lake.name}}, {{lake.dcName}}</td>
+											<td class="numeric-column"></td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="flex-main">
+							<div class="section-white">
+								<div class="section-title flex-grid">
+									<span class="primary-space hwx-subtitle">Profiler Configuration</span>
+								</div>
+								<div class="section-content">
+									<table id="ProfilerConfiguration" class="mdl-data-table selectable">
+										<thead>
+										<tr>
+											<th class="sortable-column" (click)="toggleSort(colNames.Name)">
+                        <span>Name <i class="fa" [ngClass]="{'fa-sort': (sortState !== colSortState.Name_ASC && sortState !== colSortState.Name_DESC), 'fa-sort-asc':  (sortState === colSortState.Name_ASC), ' fa-sort-desc': (sortState === colSortState.Name_DESC)}" aria-hidden="true"></i></span>
+                      </th>
+											<th class="sortable-column" (click)="toggleSort(colNames.Version)">
+                        <span>Version <i class="fa" [ngClass]="{'fa-sort': (sortState !== colSortState.Version_ASC && sortState !== colSortState.Version_DESC), 'fa-sort-asc':  (sortState === colSortState.Version_ASC), ' fa-sort-desc': (sortState === colSortState.Version_DESC)}" aria-hidden="true"></i></span>
+                      </th>
+											<th class="sortable-column" (click)="toggleSort(colNames.Assets)">
+                        <span>Assets <i class="fa" [ngClass]="{'fa-sort': (sortState !== colSortState.Assets_ASC && sortState !== colSortState.Assets_DESC), 'fa-sort-asc':  (sortState === colSortState.Assets_ASC), ' fa-sort-desc': (sortState === colSortState.Assets_DESC)}" aria-hidden="true"></i></span>
+                      </th>
+											<th class="numeric-column sortable-column" (click)="toggleSort(colNames.Status)">
+                        <span>Status <i class="fa" [ngClass]="{'fa-sort': (sortState !== colSortState.Status_ASC && sortState !== colSortState.Status_DESC), 'fa-sort-asc':  (sortState === colSortState.Status_ASC), ' fa-sort-desc': (sortState === colSortState.Status_DESC)}" aria-hidden="true"></i></span>
+                      </th>
+										</tr>
+										</thead>
+										<tbody>
+                    <ng-container *ngFor="let profiler of profilers" >
+                      <tr [class.active]="profiler === selectedProfiler">
+                        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--clickable key-column wrap">
+                          <i class="fa fa-caret-right" aria-hidden="true" *ngIf="!selectedProfiler || selectedProfiler.profilerInfo.id !== profiler.profilerInfo.id" (click)="changeProfiler($event, profiler)"></i>
+                          <i class="fa fa-caret-down" aria-hidden="true" *ngIf="selectedProfiler && selectedProfiler.profilerInfo.id === profiler.profilerInfo.id" (click)="selectedProfiler = null"></i>
+                          <span (click)="showProfilerConfig($event, profiler)"> {{profiler.profilerInfo.displayName}} </span>
+                        </td>
+                        <td>{{profiler.profilerInfo.version}}</td>
+                        <td>{{profiler.assetsCount}}</td>
+                        <td class="numeric-column">
+                                                <span class="toggle-active" (click)="toggleActive(profiler.profilerInfo)">
+                                                    <span>{{(profiler.profilerInfo.active)?'Active':'Inactive'}}</span>
+                                                    <i class="fa" [ngClass]="(profiler.profilerInfo.active)?'fa-toggle-on':'fa-toggle-off'"></i>
+                                                </span>
+                        </td>
+                      </tr>
+                      <ng-container *ngIf="selectedProfiler && selectedProfiler.profilerInfo.id === profiler.profilerInfo.id && profilerHistoryData && profilerHistoryData.length">
+                        <tr class="hwx-white-bg no-hover" style="margin-top: 10px; padding: 15px;">
+                          <td colspan="4">
+                            <div class="profiler-history-container">
+                              <div class="hwx-subtitle">{{selectedProfiler.profilerInfo.displayName }}</div>
+                              <div class="flex-grid status-graph" style="text-align: center;">
+                                <div *ngFor="let data of profilerHistoryData;">
+                                  <div class="grap" [ngClass]="(data.status==='allPass')?'hwx-success':((data.status==='failed')?'hwx-error':'hwx-warning')">
+                                    <i class="fa fa-circle"></i>
+                                  </div>
+                                  <div class="stat">{{data.assetsProfiled}}</div>
+                                  <div class="dat">{{data.displayDate}}</div>
+                                </div>
+                                <div>
+                                  <div style="display: flex;justify-content: space-around;">
+                                    <div class="donut-chart">
+                                      <div class="slice one"></div>
+                                      <div class="slice two"></div>
+                                      <div class="chart-center">
+                                        <svg #piChart class="" style="width:150px;margin-top:-20px;"></svg>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="stat" style="margin:-75px 0 60px 0">{{todaysProgressPersentage}}%</div>
+                                  <div class="stat">In Progress</div>
+                                  <div class="dat">Today</div>
+                                  <div class="indicator"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                      <ng-container *ngIf="selectedProfiler && selectedProfiler.profilerInfo.id === profiler.profilerInfo.id && profilerHistoryData && profilerHistoryData.length === 0">
+                        <tr class="hwx-white-bg no-hover" style="margin-top: 10px; padding: 15px;">
+                          <td colspan="4">
+                            <div>{{'History data not available for ' + selectedProfiler.profilerInfo.displayName }}</div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </ng-container>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+              <app-profiler-params-config
+                *ngIf="selectedProfilerName.length !== 0"
+                [clusterId]="selectedLake.clusterId"
+                [profilerName]="selectedProfilerName"
+                (close)="onProfilerConfigChange($event)">
+              </app-profiler-params-config>
+					</div>
+
+

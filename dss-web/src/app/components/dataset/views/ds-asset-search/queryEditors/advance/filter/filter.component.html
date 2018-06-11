@@ -1,0 +1,53 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div *ngIf="!avoidNewLine" style="clear: both"></div>
+<div class="queryFilter">
+  <select class="firstSelect" (change)="onFilterTypeChange($event)">
+    <option *ngFor="let obj of availableFilters; let i=index;" [value]="i" [attr.data-se]="'advanced_search_filter_option_'+i">{{obj.display}}</option>
+  </select>
+  <select *ngIf="filterObject" [(ngModel)]="filterObject.selectedOperator" (change)="validate($event)" data-se="advanced_search_filter_operator_select">
+    <option [value]="-1">Select Operator</option>
+    <option *ngFor="let opt of filterObject.operators" [value]="opt">{{filterObject.getOperatorDisplay(opt)}}</option>
+  </select>
+  <select *ngIf="filterObject && filterObject.valueOptions && filterObject.dataType !== 'tag'" [(ngModel)]="filterObject._value" (change)="validate($event)">
+    <option [value]="-1">{{filterObject.helpTextKey | translate}}</option>
+    <option *ngFor="let opt of filterObject.valueOptions;let i=index;" [value]="i" (change)="validate($event)" >{{opt.display||opt.name||opt}}</option>
+  </select>
+  <input *ngIf="filterObject && !filterObject.valueOptions"
+         [(ngModel)]="filterObject._value"
+         [placeholder]="filterObject.helpTextKey | translate"
+         (change)="validate($event)"
+         (keydown)="onKeyDown($event)"
+         data-se="advanced_search_filter_value_input"
+  />
+  <div style="display: inline-block;" *ngIf="filterObject && filterObject.valueOptions && filterObject.dataType === 'tag'">
+    <input
+      ngui-auto-complete
+      [(ngModel)]="filterObject._value"
+      [source]="filterObject.valueOptions"
+      [placeholder]="filterObject.helpTextKey | translate"
+      max-num-list="10"
+      (keydown)="onKeyDown($event)"/>
+  </div>
+  <button class="mdl-button btn-hwx-secondary" (click)="onCloseClick()"><i class="fa fa-close"></i></button>
+</div>

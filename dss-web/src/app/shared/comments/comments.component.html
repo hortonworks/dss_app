@@ -1,0 +1,168 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="slider-mask" [routerLink]="[returnURl]"></div>
+<div class="load-right-to-left-slider dialog1x">
+  <div class="title-container">
+    <div class="hwx-subtitle">
+      <span class="primary-space comment-heading">
+        <i class="fa fa-comments"></i>
+        <span>{{"pages.comments.collaborate" | translate}}</span>
+    </span>
+      <i id="back" class="fa fa-remove close-icon" [routerLink]="[returnURl]"></i>
+    </div>
+  </div>
+  <div class="rating-section" *ngIf="isRatingEnabled">
+    <div class="rating-stars"><star-rating-comp [starType]="'svg'" [labelText]="userRatingLabel" [labelPosition]="'top'" [size]="'medium'" [speed]="'noticeable'" [step]="0.5"
+                                 [showHalfStars]="true" [id]="'rating-id'" [rating]="userRating.rating" [hoverEnabled]="true" (onRatingChange)="onRatingChange($event)" (onHoverRatingChange)="onHoverRatingChange()" (mouseleave)="onMouseLeave()"></star-rating-comp></div>
+    <div class="rating-class">
+      <div>{{formatTotalVotes(totalVotes)}}</div>
+      <div class="fixed-star">
+        <star-rating-comp [starType]="'svg'" [labelText]="averageRating.toFixed(1)" [labelPosition]="'left'" [size]="'medium'" [id]="'rating-id2'" [hoverEnabled]="false" [numOfStars]="1" [staticColor]="'positive'" [readOnly]="true"></star-rating-comp>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-grid" *ngIf="fetchError">
+    <div class="mdl-cell mdl-cell--12-col load-comment-error">{{"pages.comments.fetchErrorMsg" | translate}}</div>
+  </div>
+  <div class="mdl-grid" *ngIf="fetchInProgress && commentWithUsers.length === 0">
+    <div class="mdl-cell mdl-cell--12-col">{{"common.loading" | translate}}...</div>
+  </div>
+  <div *ngIf="!fetchInProgress">
+    <div class="mdl-grid" *ngIf="!fetchError && commentWithUsers.length === 0 && allCommentsLoaded">
+      <div class="mdl-cell mdl-cell--12-col no-comments">{{"pages.comments.noComments" | translate}}</div>
+    </div>
+    <div class="comment-tree" (scroll)="loadNext()">
+      <ul>
+        <li *ngFor="let commentWithUser of commentWithUsers">
+          <div class="comment" [ngClass]= "{'online-user': isLoggedInUser(commentWithUser)}">
+            <div class="flex-grid">
+              <div class="primary-space">
+                        <span class="comment-user" [ngClass]= "{'hwx-warning-bg': !isLoggedInUser(commentWithUser), 'hwx-external-bg': isLoggedInUser(commentWithUser)}">
+                            <i class="fa fa-user"></i>
+                        </span>
+                <div class="user-display">
+                  <div class="username-text">{{commentWithUser.userName}}</div>
+                  <div class="comment-date">{{formatDate(commentWithUser.comment.lastModified)}}</div>
+                </div>
+              </div>
+              <div>
+                <div class="utility-action-selection">
+                            <span>
+                                <i class="fa fa-ellipsis-v"></i>
+                            </span>
+                  <ul class="utility-action-options">
+                    <li (click)="onReplyToComment(commentWithUser, commentWithUser)">
+                      <i class="fa fa-reply"></i>
+                      <span>Reply</span></li>
+                    <li (click)="onDeleteComment(commentWithUser,commentWithUser)" [ngClass]= "{'hide': !isLoggedInUser(commentWithUser)}">
+                      <i class="fa fa-times"></i>
+                      <span>Delete</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="comment-text" *ngIf="commentWithUser.comment.comment.length < 128">
+              {{commentWithUser.comment.comment}}
+            </div>
+            <div class="comment-text" *ngIf="commentWithUser.comment.comment.length >= 128">
+              {{lengthAdjustedComment(commentWithUser.comment.comment,commentWithUser.isCommentExpanded)}}
+              <div><a class="expandable-view" (click)=" commentWithUser.isCommentExpanded = !commentWithUser.isCommentExpanded"><i>view
+                {{commentWithUser.isCommentExpanded? 'less':'more'}}</i></a></div>
+            </div>
+            <div class="comment-text" *ngIf="commentWithUser.comment.numberOfReplies > 0"><a class="view-replies" (click)="toggleAndGetReplies(commentWithUser)">{{commentWithUser.isReplyVisible? 'Hide ':'View '}} all {{commentWithUser.comment.numberOfReplies}} {{commentWithUser.comment.numberOfReplies > 1 ? 'replies' : 'reply'}}</a></div>
+            <div>
+              <ul [ngClass]="{'response-group': commentWithUser.replies && (commentWithUser.replies.length > 0) }" *ngIf="commentWithUser.isReplyVisible">
+                <li *ngFor="let reply of commentWithUser.replies">
+                        <span class="comment-reply">
+                            <i class="fa fa-reply"></i>
+                        </span>
+                  <div class="comment" [ngClass]= "{'online-user': isLoggedInUser(reply)}">
+                    <div class="flex-grid">
+                      <div class="primary-space">
+                                    <span class="comment-user" [ngClass]= "{'hwx-warning-bg': !isLoggedInUser(reply), 'hwx-external-bg': isLoggedInUser(reply)}">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                        <div class="user-display">
+                          <div class="username-text">{{reply.userName}}</div>
+                          <div class="comment-date">{{formatDate(reply.comment.lastModified)}}</div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="utility-action-selection">
+                                        <span>
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </span>
+                          <ul class="utility-action-options">
+                            <li (click)="onReplyToComment(reply,commentWithUser)">
+                              <i class="fa fa-reply"></i>
+                              <span>Reply</span></li>
+                            <li (click)="onDeleteComment(reply,commentWithUser)" [ngClass]= "{'hide': !isLoggedInUser(reply)}">
+                              <i class="fa fa-times"></i>
+                              <span>Delete</span></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="comment-text" *ngIf="reply.comment.comment.length < 128">
+                      {{reply.comment.comment}}
+                    </div>
+                    <div class="comment-text" *ngIf="reply.comment.comment.length >= 128">
+                      {{lengthAdjustedComment(reply.comment.comment, reply.isCommentExpanded)}}
+                      <div><a class="expandable-view" (click)=" reply.isCommentExpanded = !reply.isCommentExpanded"><i>view
+                        {{reply.isCommentExpanded? 'less':'more'}}</i></a></div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="edge" #edge><i *ngIf="(!allCommentsLoaded || newCommentsAvailable)" class="fa fa-spinner fa-spin fa-2x fa-fw" aria-hidden="true"></i></div>
+    </div>
+  </div>
+  <div class="slider-footer">
+    <div class="comment-reply-to-placeholder" *ngIf="isReply" #replyToCommentArea>
+      <div class="username-text"><span>{{replyTo.username}}</span>
+        <i class="fa fa-remove close-icon close-reply" (click)="removeReply()" id="close-reply"></i>
+      </div>
+      <div class="comment-reply">{{replyTo.commentText}}</div>
+    </div>
+    <div class="flex-grid form-reply">
+        <span class="primary-space">
+          <textarea #newComment type="text" placeholder="Add your comment here..." class="comment-input" [(ngModel)]="newCommentText" rows="2" (keydown)="resizeTextArea()" (cut)="resizeTextArea()" (paste)="resizeTextArea()"></textarea>
+        </span>
+      <span>
+            <button class="paper-btn" (click)="onPostComment()" id="post">
+                <i class="fa fa-chevron-up"></i>
+            </button>
+        </span>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

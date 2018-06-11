@@ -1,0 +1,48 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div id="persona_side_nav" #sideNav class="sidenav dss-sidebar"  [ngClass]="{'collpased': collapseSideNav}">
+
+  <div data-se="app__collapsibleNav-persona" #personaNavSrc class="dp-header-logo dp-header-logo--active borderBox">
+    <img  [attr.src]="dssLogoPath"/>
+    <span id="persona_drop_down" class="persona-drop-down-small"></span>
+    <span class="persona-name">Data Steward Studio</span>
+  </div>
+
+  <div #currentNav *ngFor="let nav of navItems; let i = index" [attr.id]="'persona_side_nav_item_'+i"
+       (click)="onSideNavClick($event, nav, currentNav)" (mouseenter)="onSideNavMouseEnter(nav, currentNav)"  (mouseleave)="onSideNavMouseLeave(nav, currentNav)">
+    <div class="sidenav-item" [ngClass]="{'active': activeTabName === nav.name}">
+      <i *ngIf="nav.iconClassName != ''" [ngClass]="'fa ' +  nav.iconClassName" aria-hidden="true"></i>  <span class="sidenav-item-name"> {{ nav.name }} </span>
+    </div>
+    <div class="sidenav-item-children">
+      <div class="sidenav-item-name-children" *ngFor="let childNav of nav.children" [ngClass]="{'hide-menu': nav.hidden }">
+        <span class="sidenav-item" [ngClass]="{'active': activeTabName === childNav.name}" (click)="onSideNavClick($event, childNav, currentNav)"> {{ childNav.name }} </span>
+      </div>
+    </div>
+  </div>
+
+  <div id="persona_side_nav_expander" class="expander" (click)="toggleNav()">
+    <i *ngIf="!collapseSideNav" class="fa fa-angle-double-left"></i>
+    <i *ngIf="collapseSideNav" class="fa fa-angle-double-right"></i>
+  </div>
+
+</div>

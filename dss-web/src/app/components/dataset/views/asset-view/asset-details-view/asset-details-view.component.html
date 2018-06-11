@@ -1,0 +1,90 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="loader" [ngClass]="{'hidden': !saveTagInProgress}"> </div>
+
+<div class="details-wrapper" [ngClass]="{'edit-tags': editTags, 'mask': saveTagInProgress}">
+  <section>
+    <table style="width: 100%" class="mdl-data-table mdl-js-data-table" >
+      <thead>
+      <tr>
+        <th class="mdl-data-table__cell--non-numeric">&nbsp;</th>
+        <th class="mdl-data-table__cell--non-numeric">Name</th>
+        <th class="mdl-data-table__cell--non-numeric">Type</th>
+        <th class="mdl-data-table__cell--non-numeric" title="* Approximate values as being computed using HLL algorithm.">Unique Values *</th>
+        <th class="mdl-data-table__cell--non-numeric">Null Values</th>
+        <th class="mdl-data-table__cell--non-numeric">Max</th>
+        <th class="mdl-data-table__cell--non-numeric">Min</th>
+        <th class="mdl-data-table__cell--non-numeric">Mean</th>
+        <th class="mdl-data-table__cell--non-numeric">Comment</th>
+        <th class="mdl-data-table__cell--non-numeric asset-tags-header p-0">
+          <div class="tag-edit-button-wrapper" [ngClass]="{'space-between': !editTags, 'flex-end': editTags}">
+            <span> {{ editTags ? '' : 'Tags' }} </span>
+            <div class="asset-tags-button">
+              <button class="mdl-button tag-edit-button" [ngClass]="{'btn-hwx-default': !editTags, 'btn-hwx-primary': editTags}" (click)="toggleEdit()" [disabled]="saveTagInProgress">
+                {{ editTags ? ("common.save" | translate) : ("pages.dataset.asset-details-schema.edit-tags" | translate)}}
+              </button>
+              <button class="mdl-button tag-edit-button btn-hwx-default" (click)="cancelEditTags()" [disabled]="saveTagInProgress" *ngIf="editTags">
+                {{"common.cancel" | translate}}
+              </button>
+            </div>
+          </div>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let schema of assetSchemas">
+        <tr [ngClass]="{'pointer': isChartDataAvailableForCol(schema.guid)}" (click)="setColGuid(schema.guid)">
+          <td class="mdl-data-table__cell--non-numeric">
+            <i [class]="getIconClass(schema.guid)"></i>
+          </td>
+          <td class="mdl-data-table__cell--non-numeric">{{schema.name}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{schema.type}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{schema.noOfUniques}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{schema.noOfNulls}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{schema.max | number:'.0-2'}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{schema.min | number:'.0-2'}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{schema.mean | number:'.0-2'}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{schema.comment}}</td>
+          <td class="mdl-data-table__cell--non-numeric asset-tags-col">
+            <div class="asset-tags">
+                <span class="tag" *ngFor="let tag of schema.tags | configuredTags"
+                      [ngClass]="{'suggested': tag.status === assetTagStatus.SUGGESTED, 'accepted': tag.status === assetTagStatus.ACCEPTED}">
+                  {{ tag.name | displayDPTag }}<i class="fa fa-times" (click)="onRemoveTag(schema, tag)"> </i>
+                </span>
+              <i class="fa fa-plus add-button" (click)="onAddTagsButtonClick(schema)"></i>
+              <dss-config-column-tags-dialog *ngIf="schema.showAddTagsDialog" [tags]="schema.tags"  (tagsChange)="onTagsChanged($event, schema)" (close)="onTagConfigClose(schema)"> </dss-config-column-tags-dialog>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="colGuid === schema.guid">
+          <td colspan="10" style="height:100px;padding: 15px 0;">
+            <asset-column-visual [data]="colVisualData"></asset-column-visual>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+    <br/><br/>
+    <div class="starText">* Approximate values as being computed using HLL algorithm.</div>
+  </section>
+</div>

@@ -1,0 +1,110 @@
+/*!
+ *   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+ *
+ *   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+ *
+ *   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+ *   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+ *   properly licensed third party, you do not have any rights to this code.
+ *
+ *   If this code is provided to you under the terms of the AGPLv3:
+ *   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *     FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+ *     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+ *     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+ *     OR LOSS OR CORRUPTION OF DATA.
+ */
+
+@import "../../../../../styles/variables";
+
+.page-container {
+  padding-top: 30px;
+}
+.ds-editor-cont {
+  padding: 20px 0;
+  & .nav-panel {
+    width: $side-nav-width;
+    float: left;
+    border-right: 1px solid $iron;
+
+    & .nav-stage {
+      line-height: 20px;
+      color: $dusty-gray;
+      margin: 20px 0;
+
+      & span {
+        margin: 0 10px;
+      }
+      & .circle {
+        border : 1px solid $iron;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        float: left;
+        text-align: center;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      .fa-check-circle {
+        display: none;
+        float: left;
+        font-size: 20px;
+      }
+
+      & .fa-caret-left {
+        font-size: 20px;
+        margin-right: -1px;
+        color: transparent;
+      }
+      &.done {
+        color: $mountain_meadow;
+        cursor: pointer;
+        .circle {
+          display: none;
+        }
+        .fa-check-circle {
+          display: block;
+        }
+      }
+    }
+  }
+  & .nav-panel[stage="1"] .stage_1,
+  & .nav-panel[stage="2"] .stage_2,
+  & .nav-panel[stage="3"] .stage_3 {
+    color: $mountain_meadow;
+    & .circle {
+      border-color: $mountain_meadow;
+    }
+    & .fa-caret-left {
+      color: $mountain_meadow;
+    }
+  }
+  & .nav-result-panel {
+    margin: 0 0 0 $side-nav-width;
+    padding: 20px;
+  }
+}
+
+.fillMandatoryMsg {
+  margin-top: 15px;
+  color: $burnt-sienna;
+  display: none;
+}
+
+:host /deep/ .taggingWidget {
+  width: 350px !important;
+}
+
+.error-section {
+  color: $roman-red;
+  padding: 10px;
+}

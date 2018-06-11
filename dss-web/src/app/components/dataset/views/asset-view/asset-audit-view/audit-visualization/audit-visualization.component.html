@@ -1,0 +1,72 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+<div class="flex-row">
+  <div class="spacer-h"></div>
+  <div class="filter-labels">
+    <ng-container *ngFor="let filter of filters">
+    <span class="mdl-chip asset-audit-search-tag filter-tags">
+           <span class="mdl-chip__text">
+             <span class="title">{{filter.display}}:</span>
+             <span class="value">&nbsp;{{filter.value}}</span>
+             <span class="close" (click)="removeFilter(filter)"><i class="fa fa-times"></i></span>
+           </span>
+    </span>
+    </ng-container>
+  </div>
+  <div class="search-input">
+    <i *ngIf="!userName" class="fa fa-filter"></i>
+    <i *ngIf="userName" class="fa fa-close" (click)="userName=''; onUserChange();"></i>
+    <input type="text" placeholder="Filter by User" [(ngModel)]="userName" name="search-input" id="search" (keyup)="onUserChange();"/>
+  </div>
+
+  <my-date-range-picker name="mydaterange"
+    [options]="myDateRangePickerOptions"
+    [(ngModel)]="dateModel"
+    (dateRangeChanged)="onDateRangeChanged($event)"
+    required></my-date-range-picker>
+</div>
+<div class="flex-row">
+  <div class="flex-75 spacer-tr-10">
+    <div class="chart-title">
+      Allowed VS Unauthorised Access
+    </div>
+    <div #stackedbarchart class="chart" id="allowedVsUnauthorisedAccess"  *ngIf="!barChartLoading && !noDate && !barChartLoading503 && !noBarData">
+      <svg></svg>
+    </div>
+    <div *ngIf="barChartLoading" class="loadingDiv">Loading...</div>
+    <div *ngIf="barChartLoading503" class="loadingDiv">Service is temporarily unavailable, will retry in a 10 seconds...</div>
+    <div *ngIf="noDate" class="loadingDiv">Select Date Range.</div>
+    <div *ngIf="noBarData" class="loadingDiv">Data not available.</div>
+  </div>
+  <div class="flex-25 spacer-t-10">
+    <div class="chart-title">
+      Access Type
+    </div>
+    <div #donutchart class="chart" id="selectVsUpdate" *ngIf="!paiChartLoading && !noDate && !paiChartLoading503 && !noPaiData">
+      <svg></svg>
+    </div>
+    <div *ngIf="paiChartLoading" class="loadingDiv">Loading...</div>
+    <div *ngIf="paiChartLoading503" class="loadingDiv">Service is temporarily unavailable, will retry in a 10 seconds...</div>
+    <div *ngIf="noDate" class="loadingDiv">Select Date Range.</div>
+    <div *ngIf="noPaiData" class="loadingDiv">Data not available.</div>
+  </div>
+</div>

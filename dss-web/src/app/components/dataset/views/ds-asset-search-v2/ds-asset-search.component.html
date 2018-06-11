@@ -1,0 +1,136 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="assetSearch borderBox">
+
+
+	<div class="search-component">
+		<i class="fa fa-search"></i>
+		<input type="text" title="Search" class="form-control" placeholder="Asset Name"
+		[(ngModel)]="searchText" (change)="onSearchTextChange($event)"/>
+	</div>
+
+	<div class="search-result flex-grid">
+            <div class="refine-search">
+                <div class="title">
+                    <i class="fa fa-sliders"></i>
+                    <span class="caption">Refine Search</span>
+                </div>
+                <div class="filter-section-group">
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <i class="fa fa-angle-right"></i>
+                            <span class="hwx-subtitle">Created</span>
+                            <span class="pull-right clear-filter" style="cursor:pointer;">Clear</span>
+                        </div>
+                        <div>
+                            <div class="radio-control"><input class="regular-radio" type="radio" name="created" title=""> <span>Last day</span></div>
+                            <div class="radio-control"><input class="regular-radio" type="radio" name="created" title=""> <span>Last 30 days</span></div>
+                            <div class="radio-control"><input class="regular-radio" type="radio" name="created" title=""> <span>Last 60 days</span></div>
+                        </div>
+                    </div>
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <i class="fa fa-angle-right"></i>
+                            <span class="hwx-subtitle">Tag</span>
+                            <span class="pull-right clear-filter" style="cursor:pointer;" (click)="clearTag()">Clear</span>
+                        </div>
+                        <input type="Text" ngui-auto-complete [(ngModel)]="selectedTag" [source]="tagOptions"
+								placeholder="Enter Text" max-num-list="5" (change)="onTagSelectionChange($event)"/>
+                    </div>
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <i class="fa fa-angle-right"></i>
+                            <span class="hwx-subtitle">Owner</span>
+                            <span class="pull-right clear-filter" style="cursor:pointer;" (click)="clearOwnerName()" >Clear</span>
+                        </div>
+                        <input placeholder="Enter Text" type="Text" [(ngModel)]="ownerName" (change)="onOwnerNameChange($event)"/>
+                    </div>
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <i class="fa fa-angle-right"></i>
+                            <span class="hwx-subtitle">DB Name</span>
+                            <span class="pull-right clear-filter" style="cursor:pointer;" (click)="clearDbName()">Clear</span>
+                        </div>
+                        <input placeholder="Enter Text" type="Text" [(ngModel)]="dbName" (change)="onDbNameChange($event)"/>
+                    </div>
+<!--
+					<div class="filter-section">
+						<div class="filter-header">
+							<a style="cursor: pointer; text-transform: uppercase">
+								<i class="fa fa-plus-square"></i>
+								<span>Add Filter</span>
+							</a>
+						</div>
+                    </div>
+ -->
+				</div>
+            </div>
+            <div class="result-list">
+                <div class="title">
+                    <span style="font-weight: 500; padding-right: 25px; line-height: 1.5; visibility: visible;">
+                        <span id="FilteredItems" *ngIf="showQueryResults && resultStartIndx">{{resultStartIndx}} - {{resultEndIndx}}</span>
+                    </span>
+                    <span id="filterTags" class="tags" style="padding-top: 0"></span>
+
+                </div>
+				<div class="queryResultCont" #queryResultCont>
+				    <ds-assets-list-style1 [hideTabs]="true"
+				                    [hideSearch]="true"
+				                    [queryModels]="queryModel"
+				                    [innerListScrollable]="true"
+				                    [avoidLoadingOnInit]="true"
+				                    [clusterId]="clusterId"
+				                    [datasetId]="datasetId"
+				                    [allowAssetNavigation]="false"
+				                    [showBelongsToColumn]="showBelongsToColumn"
+				                    (onAction)="onListAction($event)"
+				                    *ngIf="showQueryResults"                    #dsAssetList></ds-assets-list-style1>
+				    <div *ngIf="!showQueryResults" class="noSearchMessage"><span>{{"pages.dataset.asset-search.noSearchMsg" | translate}}</span></div>
+				</div>
+            </div>
+        </div>
+
+
+
+	<div class="modal-footer flex-grid">
+	    <div class="selected-items-container flex-grid" *ngIf="!hideActionButtonCont">
+	        <div class="flex-grid" style="font-size: 1.5em; color: #666; margin-right: 20px;">
+	            <div style="padding: 5px;"><i class="fa fa-angle-double-up"></i></div>
+	            <div style="padding: 5px"><i class="fa fa-inbox"></i></div>
+	            <div style="padding: 5px; text-transform: uppercase;">
+	                <span style="color: #333; font-size: 1.2em;" id="ItemSelected">
+	                	<span [style.display]="allSelected ? 'inline' : 'none'">ALL</span>
+	                	<span [style.display]="allSelected && cherryDroped ? 'inline' : 'none'" style="font-size: 12px; vertical-align: 4px;"> but </span>
+	                	<span [style.display]="cherryDroped ? 'inline' : 'none'">{{cherryDroped}}</span>
+	                	<span [style.display]="cherryPicked ? 'inline' : 'none'">{{cherryPicked}}</span>
+	                	<span [style.display]="!allSelected && !cherryDroped && !cherryPicked ? 'inline' : 'none'">0</span>
+	                </span>
+	                <span style="font-size: 12px; vertical-align: 4px;">Selected</span>
+	            </div>
+	        </div>
+	        <button class="mdl-button btn-hwx-primary" type="button" value="" (click)="onAddAssetToList()">Add</button>
+	    </div>
+
+	    <button class="mdl-button btn-hwx-secondary" type="button" (click)="onCancel()">Cancel</button>
+	</div>
+</div>

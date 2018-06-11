@@ -1,0 +1,97 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="componentCont borderBox" #outerCont >
+  <div *ngIf="!hideTabs" class="tabCont">
+    <span *ngIf="assetsCount" style="line-height:2;">
+      <span>{{assetsCount}}</span> <span>{{(assetsCount == 1)?"Asset":"Assets"}}</span>
+    </span>
+    <span *ngIf="applicableActions.length" class="actionButtonCont">
+      <button *ngIf="applicableActions.indexOf(actionEnum.REMOVE) != -1" class="mdl-button btn-hwx-secondary" (click)="actionRemove()">
+        <i class="fa fa-times"></i> {{"pages.dataset.ds-editor.action.remove" | translate}}</button>
+      <button *ngIf="applicableActions.indexOf(actionEnum.ADD) != -1" class="mdl-button btn-hwx-secondary" (click)="actionAddMore()">
+        <i class="fa fa-plus"></i> {{"pages.dataset.ds-editor.action.add" | translate}}</button>
+      <button *ngIf="applicableActions.indexOf(actionEnum.EDIT) != -1" class="mdl-button btn-hwx-secondary" (click)="actionEdit()">
+        <i class="fa fa-edit"></i> {{"pages.dataset.ds-editor.action.edit" | translate}}</button>
+      <button *ngIf="applicableActions.indexOf(actionEnum.DELETE) != -1" class="mdl-button btn-hwx-secondary" (click)="actionDelete()">
+        <i class="fa fa-trash"></i> {{"pages.dataset.ds-editor.action.delete" | translate}}</button>
+      <button *ngIf="applicableActions.indexOf(actionEnum.DONE) != -1" class="mdl-button btn-hwx-secondary" (click)="actionDone()">{{"pages.dataset.ds-editor.action.done" | translate}}</button>
+    </span>
+
+    <div *ngIf="!hideSearch" class="search-input">
+      <input #searchBox type="text" placeholder="Search" (keyup.enter)="searchText=searchBox.value;setFirstPage(); fetchAssets()"/>
+      <i _ngcontent-c13="" aria-hidden="true" class="fa fa-search dp-input__icon"></i>
+    </div>
+
+    <div style="clear: both;"></div>
+  </div>
+  <div class="listCont" #listCont>
+    <div class="list" [class.unLoaded]="!dsAssets.length" [class.withDsNameCom]="showBelongsToColumn">
+      <div class="listRow listHead">
+        <div *ngIf="dsAssets.length">
+          <div class="col checkboxCont" *ngIf="Editable">
+            <input type="checkbox" (change)="onCheckAllChange($event)" [checked]="checkedAllState()"/>
+          </div>
+          <div class="col starCol" *ngIf="showBelongsToColumn">&nbsp;</div>
+          <div class="col sourceCol">{{"pages.dataset.labels.source" | translate}}</div>
+          <div class="col nameCol">{{"pages.dataset.labels.name" | translate}}</div>
+          <div class="col dbNameCol">{{"pages.dataset.labels.dbName" | translate}}</div>
+          <div class="col ownerCol">{{"pages.dataset.labels.owner" | translate}}</div>
+          <div class="col dateCol">{{"pages.dataset.labels.createdTime" | translate}}</div>
+
+        </div>
+      </div>
+      <div class="justList" #table>
+        <div class="list displayAtCenter"  *ngIf="resultState == resultStates.NOMORE"><span>{{"pages.dataset.asset-search.noMoreResultsMsg" | translate}}</span></div>
+        <div class="list displayAtCenter"  *ngIf="resultState == resultStates.EMPTY"><span>{{"pages.dataset.asset-search.noResultsMsg" | translate}}</span></div>
+        <div class="list displayAtCenter"  *ngIf="resultState == resultStates.LOADING"><span>{{"common.loading" | translate}} ...</span></div>
+        <div *ngIf="dsAssets.length">
+          <div class="listRow"  *ngFor="let asset of dsAssets;" [class.disableRow]="showBelongsToColumn && asset.dsName">
+            <div class="col checkboxCont" *ngIf="Editable">
+              <input type="checkbox" [disabled]="showBelongsToColumn && asset.dsName" [checked]="showChecked(asset) || showBelongsToColumn && asset.dsName" (change)="onAssetSelectionChange(asset)"/>&nbsp;</div>
+            <div class="col starCol" *ngIf="showBelongsToColumn">{{asset.dsName?"*":"&nbsp;"}}</div>
+            <div class="col sourceCol {{(asset.source.toUpperCase() == 'HIVE')?'hiveCol':'filesCol'}}">
+              <span><i class="fa {{(asset.source.toUpperCase() == 'HIVE')?'fa-table':'fa-file-o'}}"></i>&nbsp;&nbsp;{{asset.source}}</span>
+            </div>
+            <div class="col nameCol" [class.hlink]="allowAssetNavigation" (click)="onAssetClick(asset.id, asset.clusterId)" title="{{asset.name}}" [attr.data-se]="asset.dsName?null:'ds_asset_list_itm_selectable'">{{asset.name}}</div>
+            <div class="col dbNameCol">{{asset.dbName}}</div>
+            <div class="col ownerCol" title="{{asset.owner}}">{{asset.owner}}</div>
+            <div class="col dateCol" title="{{asset.createdTime}}">{{asset.createdTime}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="simple-pagination-cont">
+        <simple-pagination data-se="asset_list_pagination"
+          [pageSize]="pageSize"
+          [pageStartIndex]="pageStartIndex"
+          [count]="assetsCount"
+          (onPageSizeChange)="onPageSizeChange($event)"
+          (onPageChange)="onPageChange($event)"
+        ></simple-pagination>
+      </div>
+      <div>
+        <span class="starExplanation" *ngIf="showBelongsToColumn && showStarMessage" >* {{"pages.dataset.asset-list.starAssetmessage" | translate}}</span>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+  </div>
+</div>
