@@ -1,0 +1,130 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+
+<div class="rule-editor-container">
+	<div class="content content-with-sidebar">
+		<div class="hwx-title">Custom Rule</div>
+		<div class="hwx-white-bg" style="margin-top: 15px">
+			<div class="hwx-form">
+				<div class="form-field">
+					<label for="name">{{"common.name" | translate}} <span class="highlightRed">*</span></label>
+					<input class="form-control max-width" type="text" id="name" [(ngModel)]="ruleWithAttributes.rule.name">
+				</div>
+				<div class="form-field">
+					<label for="description">{{"common.description" | translate}}</label>
+					<textarea class="form-control max-width" id="description" [(ngModel)]="ruleWithAttributes.rule.description"></textarea>
+				</div>
+				<div class="form-field max-width">
+					<label for="tags">{{"common.tags" | translate}} <span class="highlightRed">*</span></label>
+					<tagging-widget id="tags"
+					  [tags]="selectedTags"
+	                  [availableTags]="filteredTags"
+	                  [clearOnSearch]="true"
+	                  (textChange)="onTagSearchChange($event)"
+	                  (onNewSearch)="onNewTagAddition($event)"
+	  				></tagging-widget>
+				</div>
+        <div class="form-field">
+          <label for="name-dsl">Column Name Expression</label>
+          <dsl-widget class="form-control max-width" id="name-dsl"
+                      [(dsl)]="nameDslObj.dsl"
+                      [(dslDisplay)]="nameDslObj.dslDisplay"
+                      [oprands]="dslOprands"
+                      [operators]="dslOperators"
+                      [subOprands]="dslSubOprands"
+          ></dsl-widget>
+				</div>
+        <div class="form-field">
+          <label for="value-dsl">Column Value Expression <span class="highlightRed">*</span></label>
+          <dsl-widget class="form-control max-width" id="value-dsl"
+                      [(dsl)]="valueDslObj.dsl"
+                      [(dslDisplay)]="valueDslObj.dslDisplay"
+                      [oprands]="dslOprands"
+                      [operators]="dslOperators"
+                      [subOprands]="dslSubOprands"
+          ></dsl-widget>
+        </div>
+				<div class="action-button-container">
+					<button type="button" class="mdl-button btn-hwx-default" (click)="save(false)">Save</button>
+					<button type="button" class="mdl-button btn-hwx-default" (click)="onCancel()">Cancel</button>
+					<button type="button" class="mdl-button btn-hwx-primary" (click)="showTestPopup()">Save & Validate</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="dialog-mask" *ngIf="!isTestBoxHidden">
+		<dialog class="mdl-dialog dp-dialog test-run-dialog">
+			<h4 class="mdl-dialog__title hwx-subtitle">Data For Validation</h4>
+        <div class="hwx-form">
+          <div class="form-field">
+              <label>Sample to test column name expression</label>
+              <textarea class="form-control" style="width: 100%;" [(ngModel)]="columnNameTestData"></textarea>
+          </div>
+          <div class="form-field">
+            <label>Sample to test column value expression</label>
+            <textarea class="form-control" style="width: 100%;" [(ngModel)]="columnValueTestData"></textarea>
+          </div>
+          <label>Datalake where the validation will run</label>
+          <select [(ngModel)]="testClusterID" style="width: 100%;">
+            <option value="0">Select Datalake</option>
+            <option *ngFor="let lake of lakes; let i=index" value="{{lake.clusterId}}" >{{lake.name}}, {{lake.dcName}}</option>
+          </select>
+        </div>
+			<div class="mdl-dialog__actions" >
+			  <button type="button" class="mdl-button btn-success" (click)="startTest()">
+				  <i [ngClass]="{'fa fa-spinner fa-spin': testButtonDisabled}"></i>
+				  <span *ngIf="!testButtonDisabled">Submit Validation</span>
+			  </button>
+			  <button type="button" class="mdl-button close btn-hwx-default" (click)="doClose()">Close</button>
+			</div>
+		</dialog>
+	</div>
+
+  <!--<div class="dialog-mask" *ngIf="!isTestBoxHidden">-->
+    <!--<dialog class="mdl-dialog dp-dialog test-run-dialog">-->
+      <!--<h4 class="mdl-dialog__title hwx-subtitle">Select Lake for Validation</h4>-->
+      <!--<div class="greyBox">-->
+        <!--<div *ngFor="let lake of lakes;" class="checkboxCont">-->
+          <!--<input type="radio" name="lake_radio" (change)="testClusterID = lake.clusterId">&nbsp;&nbsp;<b>{{lake.name}}, {{lake.dcName}}</b>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<br/>-->
+      <!--<div class="action-button-container">-->
+        <!--<button type="button" class="mdl-button btn-hwx-default" (click)="doClose()">Close</button>-->
+        <!--<button type="button" class="mdl-button btn-hwx-primary" (click)="startValidation()">Start Validation</button>-->
+      <!--</div>-->
+    <!--</dialog>-->
+  <!--</div>-->
+
+  <div class="sidebar right-sidebar flex-grid" [class.sidebar-open]="sidebarOpen">
+    <rule-resource-list
+      [regExResources]="regExResources"
+      [lookupResources]="fileResources"
+      (changeNotifier)="reFillDslSubOprands()"
+      (toggleNotifier)="sidebarOpen=!sidebarOpen">
+    </rule-resource-list>
+  </div>
+
+
+</div>

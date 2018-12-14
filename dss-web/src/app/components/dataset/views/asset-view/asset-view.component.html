@@ -1,0 +1,69 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="asset-view">
+  <div class="asset-view-wrapper">
+    <div class="asset-view-summary">
+    <div class="title">
+      <span class="hwx-title"> {{tableName}} </span>
+      <span class="mdl-chip hive-table-chip">
+        <span class="mdl-chip__text">HIVE</span>
+      </span>
+    </div>
+    <app-borromean-rings-button (onClick)="toggleSummary()" [isActive]="this.showSummary"> </app-borromean-rings-button>
+  </div>
+
+    <dp-tabs [tabEnum]="topLevelTabs" [tabType]="tabType.UNDERLINE" (selected)="selectedTopLevelTabs=$event"> </dp-tabs>
+
+    <section *ngIf="selectedTopLevelTabs === topLevelTabs.OVERVIEW">
+      <dss-asset-view-overview [clusterId]="clusterId" [assetDetails]="assetDetails" [guid]="guid" [isSensitivityProfilerRan]="isSensitivityProfilerRan"> </dss-asset-view-overview>
+    </section>
+
+    <section *ngIf="selectedTopLevelTabs === topLevelTabs.SCHEMA" style="position:relative;">
+      <div class="sticker" *ngIf="nextRunDisplay">{{nextRunDisplay}}</div>
+      <dp-asset-details-view [tagClassification]="tagClassification" [assetDetails]="assetDetails" [clusterId]="clusterId" [guid]="guid" (assetChanged)="onAssetChanged()"> </dp-asset-details-view>
+    </section>
+
+    <section *ngIf="selectedTopLevelTabs === topLevelTabs.AUDIT">
+      <asset-audit-view [clusterId]="clusterId" [assetDetails]="assetDetails"> </asset-audit-view>
+    </section>
+
+    <section *ngIf="selectedTopLevelTabs === topLevelTabs.POLICY">
+      <div class="hwx-title-panel hwx-title">{{'pages.dataset.labels.resourceBasedPolicies' | translate}}</div>
+      <dp-asset-resource-policy-view [clusterId]="clusterId" [assetDetails]="assetDetails"> </dp-asset-resource-policy-view>
+      <div class="hwx-title-panel hwx-title">{{'pages.dataset.labels.tagBasedPolicies' | translate}}</div>
+      <dp-asset-tag-policy-view [clusterId]="clusterId" [guid]="guid"> </dp-asset-tag-policy-view>
+    </section>
+  </div>
+
+  <div class="dp-sidle-in-summary" [ngClass]="{'show': showSummary}">
+    <dss-asset-view-aside-summary
+      [clusterId]="clusterId"
+      [tagClassification]="tagClassification"
+      [assetDetails]="assetDetails"
+      [profierAndAssetInfos]="profierAndAssetInfos"
+      (assetChanged)="onAssetChanged()"
+    >
+    </dss-asset-view-aside-summary>
+  </div>
+
+</div>

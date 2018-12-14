@@ -1,0 +1,257 @@
+/*!
+ *   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+ *
+ *   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+ *
+ *   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+ *   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+ *   properly licensed third party, you do not have any rights to this code.
+ *
+ *   If this code is provided to you under the terms of the AGPLv3:
+ *   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *     FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+ *     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+ *     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+ *     OR LOSS OR CORRUPTION OF DATA.
+ */
+
+@import "../../../../../styles/variables";
+
+.componentCont.innerListScrollable {
+  height:100%;
+}
+.tabCont {
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+  height: 55px;
+  color: $dove-gray;
+}
+
+.tabCont .firstTab {
+  border-left: 1px solid $iron;
+}
+
+.tabCont .tab{
+  width: 80px;
+  height: 55px;
+  padding: 10px 20px;
+  background-color: $alabaster;
+  border-top: 1px solid $iron;
+  border-right: 1px solid $iron;
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+  float: left;
+  cursor: pointer;
+}
+.tabCont .tab.active {
+  background-color: $bgGray;
+}
+
+.tabCont .tab .tabName {
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.tabCont .tab .tabCount {
+  font-size: 14px;
+}
+
+.tabCont .actionButtonCont {
+  float: right;
+}
+
+.listCont {
+  border:1px solid $bgGray;
+  border-radius: 3px;
+  border-top-left-radius: 0px;
+  background-color: $white;
+}
+.innerListScrollable .listCont {
+  border: 12px solid $bgGray;
+}
+.listCont .searchCont {
+  height:34px;
+  line-height: 34px;
+  background-color: $white;
+  position: relative;
+  border: 1px solid $iron;
+  border-radius: 2px;
+  margin: 10px 10px 0;
+}
+.listCont .searchCont > span {
+  position: absolute;
+  top:0px;
+  left:10px;
+}
+.listCont .searchCont > input {
+  height:34px;
+  width:100%;
+  background: transparent;
+  position: absolute;
+  top:0px;
+  left:0px;
+  border-width: 0px;
+  padding:0 0 0 30px;
+  font-size: 14px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.listCont .list {
+  background-color: white;
+  border-radius: 3px;
+  padding:15px;
+  height:100%;
+}
+
+.listCont .list .listRow .nameCol.hlink {
+  color: $eastern-blue;
+  cursor: pointer;
+}
+
+.listCont .list .listRow.listHead,
+.listCont .list .listRow.listHead .nameCol{
+  text-transform: uppercase;
+  color: $dusty-gray;
+  font-size: 12px;
+}
+.listCont .list .listRow {
+  clear: both;
+  height: 34px;
+  line-height: 33px;
+  color: $dove-gray;
+  border-top: 1px solid $iron;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom: none;
+  transition-duration: 0.28s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-property: background-color;
+}
+.listCont .list .listRow.disableRow{
+//  color: $bgGray;
+}
+.listCont .list .listRow:last-child {
+  border-bottom: 1px solid $iron;
+}
+
+.listCont .list .listRow:hover {
+  background-color: $data-table-hover-color;
+  border-color: $blizzard-blue;
+}
+
+.listCont .list .listRow:hover + .listRow {
+  border-top-color: $blizzard-blue;
+}
+
+.listCont .list .listRow.listHead,
+.listCont .list .listRow.listHead:hover {
+  background: transparent;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+.listCont .list .listRow.disabledRow {
+  color: $iron;
+}
+.listCont .list .listRow .col {
+  width:15%;
+  margin:0px 2%;
+  overflow: hidden;
+  white-space:nowrap ;
+  text-overflow: ellipsis;
+  float: left;
+}
+.listCont .list.withDsNameCom .listRow .col{
+  width:14%;
+}
+
+.listCont .list .listRow .checkboxCont,
+.listCont .list.withDsNameCom .listRow .starCol {
+  width:3% !important;
+  margin:0px;
+  text-align: center;
+}
+.listCont .list .listRow .noRowsCol {
+  text-align: right;
+}
+
+.listCont .list .listRow .sourceCol > span {
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.listCont .list .listRow .hiveCol > span {
+  color:white;
+  background-color: #53646a;
+  padding:3px 8px 2px;
+  border-radius: 3px;
+}
+.listCont .list .listRow.disabledRow .hiveCol > span {
+  background-color: $iron;
+}
+
+.listCont .list .listRow .filesCol > span {
+  color:white;
+  background-color: $dove-gray;
+  padding:3px 8px 2px;
+  border-radius: 3px;
+}
+.listCont .list .listRow.disableRow .hiveCol > span {
+  //background-color: $bgGray;
+}
+
+
+.componentCont .justList {
+  margin-bottom: 15px;
+}
+
+.componentCont.innerListScrollable .justList {
+  overflow-y: auto;
+  height:100%;
+}
+.displayAtCenter{
+  display: table;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+.displayAtCenter span {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.listCont .list.unLoaded .listRow{
+  border-width: 0px;
+}
+
+.starExplanation {
+  float:left;
+  margin-top:-30px;
+}
+
+.search-input {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  width: 250px;
+  box-sizing: border-box;
+  float: right;
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .dp-input__icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #666666;
+    font-size: 14px;
+  }
+}

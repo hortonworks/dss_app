@@ -1,0 +1,67 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+<div *ngIf="state==AWS.NOINFO" class="infoNotAvailable">Audit information is not available</div>
+<div *ngIf="state==AWS.LOADING" class="loading">Loading ...</div>
+<div *ngIf="state==AWS.LOADED" class='filterCont'>
+	<span>Access Type:</span>
+	<select (change)="onRefresh()" [(ngModel)]="accessType"><option *ngFor="let optn of accessTypeOptions" [value]="optn">{{optn}}</option></select>
+	&nbsp;&nbsp;&nbsp;
+	<span>Result:</span>
+	<select (change)="onRefresh()" [(ngModel)]="result"><option *ngFor="let optn of resultOptions" [value]="optn">{{optn}}</option></select>
+	&nbsp;&nbsp;&nbsp;
+	<button class="mdl-button btn-hwx-default" (click)="onRefresh()"><i class="fa fa-refresh"></i></button>
+</div>
+<div *ngIf="state==AWS.LOADED" class="infoTable borderBox">
+  <table class="mdl-data-table mdl-js-data-table">
+    <thead>
+      <tr>
+        <th class="mdl-data-table__cell--non-numeric">Policy ID</th>
+        <th class="mdl-data-table__cell--non-numeric">Event Time</th>
+        <th class="mdl-data-table__cell--non-numeric">User</th>
+        <th class="mdl-data-table__cell--non-numeric">Resource Type</th>
+        <th class="mdl-data-table__cell--non-numeric">Access Type</th>
+        <th class="mdl-data-table__cell--non-numeric">Result</th>
+        <th class="mdl-data-table__cell--non-numeric">Access Enforcer</th>
+        <th class="mdl-data-table__cell--non-numeric">Client IP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let audit of audits">
+        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--non-clickable">{{audit.policyId}}</td>
+        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--non-clickable">{{audit.eventTime}}</td>
+        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--non-clickable">{{audit.requestUser}}</td>
+        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--non-clickable">{{audit.resourceType}}</td>
+        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--non-clickable">{{audit.accessType}}</td>
+        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--non-clickable">{{audit.accessResult}}</td>
+        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--non-clickable">{{audit.aclEnforcer}}</td>
+        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--non-clickable">{{audit.clientIP}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <simple-pagination
+    [pageSize]="pageSize"
+    [pageStartIndex]="pageStartsFrom"
+    [count]="count"
+    (onPageSizeChange)="onPageSizeChange($event)"
+    (onPageChange)="onPageChange($event)"
+  ></simple-pagination>
+</div>

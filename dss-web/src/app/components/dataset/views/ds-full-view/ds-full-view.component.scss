@@ -1,0 +1,421 @@
+/*!
+ *   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+ *
+ *   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+ *
+ *   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+ *   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+ *   properly licensed third party, you do not have any rights to this code.
+ *
+ *   If this code is provided to you under the terms of the AGPLv3:
+ *   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *     FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+ *     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+ *     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+ *     OR LOSS OR CORRUPTION OF DATA.
+ */
+
+@import "../../../../../styles/variables";
+@import '../../../../../styles/dialog';
+
+.dsFullView {
+  & .div50Percent {
+    width: 50%;
+    float: left;
+  }
+
+  & .dsTitle {
+    text-transform: uppercase;
+    & > * {
+      vertical-align: middle;
+    }
+    & .fa {
+      font-size: 14px;
+    }
+  }
+
+  & .metaInfo {
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.3;
+    padding: 15px 0px;
+
+    & .label {
+      margin-right: 10px;
+    }
+  }
+}
+.dataset-view__header {
+  display: flex;
+}
+.dataset-view__action-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+}
+
+.dataset-delete-dialog {
+  margin: 0;
+  width: 500px;
+  left: calc(100vw - 1000px);
+}
+
+.view-icon {
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+
+  &.lock {
+    font-size: 16px;
+    color: $mine-shaft;
+  }
+}
+.view-icon-lock-disabled {
+  font-size: 16px;
+  color: $mine-shaft;
+}
+
+
+
+/***********************************************/
+
+
+.dsFullView {
+  padding:20px 25px;
+}
+
+.hwx-white-bg {
+  background: #fff;
+}
+
+.flex-grid {
+  display: flex;
+}
+.primary-space {
+  flex-grow: 1;
+}
+.hwx-subtitle {
+  font-size: 16px;
+  color: #333;
+  margin: 5px 0;
+}
+.hwx-secondary {
+  color: #1eb475;
+}
+.hwx-description {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.432;
+}
+.btn + .btn {
+  margin-left: 7px;
+}
+.btn > i {
+  margin-right: 10px;
+}
+.btn > i + i {
+  margin-right: 0;
+  margin-left: 10px;
+}
+.btn {
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border: 1px solid transparent;
+  padding: 9px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  margin: 0;
+  text-transform: uppercase;
+  height: 34px;
+}
+.btn-circle {
+  width: 24px;
+  height: 24px;
+  border: none;
+  color: #666;
+  padding: 3px;
+  vertical-align: middle;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+}
+.btn-circle.active {
+  background: #eee;
+}
+.hwx-error {
+  color: #EF6162;
+}
+
+
+.tabs > ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+.tabs.menu > ul {
+  margin-bottom: 15px;
+  line-height: 1;
+}
+.tabs > ul > li {
+  list-style:none;
+  cursor: pointer;
+  padding: 10px 20px;
+  background: #f1f2f3;
+  border: 1px solid #d0dad7;
+  border-bottom: none;
+}
+.tabs > ul > li:first-child {
+  border-radius: 4px 0 0 0;
+}
+.tabs.menu > ul > li {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+.tabs.menu > ul > li.active {
+  background: transparent;
+  border-color: #61bb5a;
+}
+
+.grapic-holder {
+  position: relative;
+  height: 83px;
+  overflow: hidden;
+}
+.color-0 { background: #cb1e31;}
+.color-1 { background: #5c810e;}
+.color-2 { background: #c912cf;}
+.color-3 { background: #F1605F;}
+.color-4 { background: #2D75EC;}
+.color-5 { background: #dda200;}
+.color-6 { background: #07B573;}
+.color-7 { background: #ffe738;}
+.color-8 { background: #f38725;}
+.color-9 { background: #9a4d31;}
+
+.grapic-holder img {
+  min-width: 100%;
+  min-height: 100%;
+  opacity: .3;
+}
+
+.grapic-holder .rating {
+  position: absolute;
+  right: 0;
+  top: 14px;
+  white-space: nowrap;
+  color: #666;
+  background: #fff;
+  border-radius: 8px 0 0 8px;
+  min-width: 40px;
+  padding: 5px;
+  text-align: right;
+  box-shadow: 1px 0 2px #ccc;
+
+  & .fa-star {
+    margin-left: 5px;
+  }
+}
+.flex-grid.animate .flex-side > * {
+  word-wrap: normal;
+  white-space: nowrap;
+}
+
+.flex-summary > div {
+  padding: 10px;
+  flex-grow: 1;
+}
+
+.flex-summary > div + div {
+  margin-left: 10px;
+}
+
+.flex-summary > div.flex-summary-item {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.flex-summary-vertical {
+  border-top: 10px solid #eee;
+}
+
+.flex-summary-vertical .flex-summary-item {
+  padding: 15px;
+  font-size: 12px;
+}
+
+.flex-side-left {
+  margin-right: 10px;
+}
+
+.flex-summary-vertical .flex-summary-item + .flex-summary-item {
+  border-top: 1px solid #eee;
+}
+
+.flex-summary-vertical .key {
+  color: #999;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.value {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.marked {
+  color: #fe69a1;
+}
+
+.flex-grid {
+  display: flex;
+}
+.flex-side-left {
+  margin-right: 10px;
+}
+.flex-side-right {
+    overflow:hidden;
+    min-width: 0;
+    width: 0;
+    margin-left: 0;
+    border: none;
+    -webkit-transition: min-width .8s ease;
+    -moz-transition: min-width .8s ease;
+    -o-transition: min-width .8s ease;
+    transition: min-width .8s ease;
+    -webkit-font-smoothing: antialiased;
+}
+.showSummary .flex-side-right {
+    min-width: $sidebar-width;
+    margin-left: 10px;
+}
+
+.flex-summary .key {
+    display: inline-block;
+    width: 100%;
+    font-size: 12px;
+}
+.flex-summary .value {
+    display: inline-block;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.flex-main {
+  flex-grow: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+.flex-side > * {
+  min-width: $sidebar-width;
+}
+
+
+.ActionButtonCont {
+  padding:10px 0px;
+}
+.ActionButtonCont > button {
+  margin:0 5px 0 0;
+}
+
+.emptyCollectionMessaging {
+  padding: 15px 15px 45px 15px;
+}
+.emptyCollectionMessaging .button-container {
+  padding:0px;
+}
+
+.popup {
+  padding: 0 0 0 50px;
+  top : 60px;
+  z-index:5;
+  background: transparent;
+}
+
+.popup > .opaque {
+  border-top:2px solid $bgGray;
+  border-radius: 0px;
+}
+
+.modal-wizard {
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  left: 200px;
+  right: 0;
+  background: #fff;
+  z-index: 100;
+  opacity: 0;
+
+  -webkit-transition: all 300ms ease 300ms;
+  -moz-transition: all 300ms ease 300ms;
+  -o-transition: all 300ms ease 300ms;
+  transition: all 300ms ease 300ms;
+}
+
+.modal-wizard.active-wizard {
+  opacity: 1;
+}
+
+.modal-outline {
+  position: fixed;
+  top: 100px;
+  bottom: 40px;
+  left: 240px;
+  right: 40px;
+  opacity: 0.9;
+  background-color: #fff;
+  border: 1px solid #3fae2a;
+
+  -webkit-transition: all 400ms ease;
+  -moz-transition: all 400ms ease;
+  -o-transition: all 400ms ease;
+  transition: all 400ms ease;
+}
+.modal-outline.active-wizard {
+  top: 60px;
+  bottom: 0;
+  left: 200px;
+  right: 0;
+  opacity: 1;
+}
+
+.modal-wizard.closing-wizard {
+  -webkit-transition: all 300ms ease 0s;
+  -moz-transition: all 300ms ease 0s;
+  -o-transition: all 300ms ease 0s;
+  transition: all 300ms ease 0s;
+}
+
+.modal-outline.closing-wizard {
+  -webkit-transition: all 400ms ease 200ms;
+  -moz-transition: all 400ms ease 200ms;
+  -o-transition: all 400ms ease 200ms;
+  transition: all 400ms ease 200ms;
+  opacity: 0;
+}
+
+/deep/ .dss-sidebar-collapsed + .dss-main .modal-outline {
+  left: 90px;
+}
+/deep/ .dss-sidebar-collapsed + .dss-main .modal-outline.active-wizard {
+  left: 50px;
+}
+/deep/ .dss-sidebar-collapsed + .dss-main .modal-wizard {
+  left: 50px;
+}

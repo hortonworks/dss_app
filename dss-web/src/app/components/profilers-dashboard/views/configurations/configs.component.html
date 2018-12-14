@@ -1,0 +1,200 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+              <app-profiler-params-config
+                *ngIf="selectedProfilerName.length !== 0"
+                [clusterId]="primaryLake.clusterId"
+                [profilerName]="selectedProfilerName"
+                (close)="onProfilerConfigChange($event)">
+              </app-profiler-params-config>
+
+<div class="flex-grid" style="position:relative;">
+						<div class="flex-side flex-side-left" style="min-width: 200px;">
+							<div class="section-white">
+								<div class="section-title flex-grid">
+									<span class="primary-space hwx-subtitle">Clusters</span>
+								</div>
+								<div class="section-content">
+									<table class="mdl-data-table selectable" id="ClusterList">
+										<tbody>
+										<tr *ngFor="let lake of clusters" [class.active]="lake === primaryLake" (click)="selectLake(lake);">
+											<td>{{lake.name}}, {{lake.dcName}}</td>
+											<td class="numeric-column"><i class="fa fa-magic default-hidden" (click)="bringUpReplicationDialog($event)" title="Replicate profiler configurations to other clusters"></i></td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="flex-main">
+							<div class="section-white">
+								<div class="section-title flex-grid">
+									<span class="primary-space hwx-subtitle">Profiler Configuration</span>
+								</div>
+								<div class="section-content">
+									<table id="ProfilerConfiguration" class="mdl-data-table selectable">
+										<thead>
+										<tr>
+											<th class="sortable-column" (click)="toggleSort(colNames.Name)">
+                        <span>Name <i class="fa" [ngClass]="{'fa-sort': (sortState !== colSortState.Name_ASC && sortState !== colSortState.Name_DESC), 'fa-sort-asc':  (sortState === colSortState.Name_ASC), ' fa-sort-desc': (sortState === colSortState.Name_DESC)}" aria-hidden="true"></i></span>
+                      </th>
+											<th class="sortable-column" (click)="toggleSort(colNames.Version)">
+                        <span>Config Version <i class="fa" [ngClass]="{'fa-sort': (sortState !== colSortState.Version_ASC && sortState !== colSortState.Version_DESC), 'fa-sort-asc':  (sortState === colSortState.Version_ASC), ' fa-sort-desc': (sortState === colSortState.Version_DESC)}" aria-hidden="true"></i></span>
+                      </th>
+											<th class="sortable-column" (click)="toggleSort(colNames.Assets)">
+                        <span>Assets Profiled Today <i class="fa" [ngClass]="{'fa-sort': (sortState !== colSortState.Assets_ASC && sortState !== colSortState.Assets_DESC), 'fa-sort-asc':  (sortState === colSortState.Assets_ASC), ' fa-sort-desc': (sortState === colSortState.Assets_DESC)}" aria-hidden="true"></i></span>
+                      </th>
+											<th class="numeric-column sortable-column" (click)="toggleSort(colNames.Status)">
+                        <span>Status <i class="fa" [ngClass]="{'fa-sort': (sortState !== colSortState.Status_ASC && sortState !== colSortState.Status_DESC), 'fa-sort-asc':  (sortState === colSortState.Status_ASC), ' fa-sort-desc': (sortState === colSortState.Status_DESC)}" aria-hidden="true"></i></span>
+                      </th>
+										</tr>
+										</thead>
+										<tbody>
+                    <ng-container *ngFor="let profiler of profilers" >
+                      <tr [class.active]="profiler === selectedProfiler">
+                        <td class="mdl-data-table__cell--non-numeric mdl-data-table__cell--clickable key-column wrap">
+                          <i class="fa fa-caret-right" aria-hidden="true" *ngIf="!selectedProfiler || selectedProfiler.profilerInfo.id !== profiler.profilerInfo.id" (click)="changeProfiler($event, profiler)"></i>
+                          <i class="fa fa-caret-down" aria-hidden="true" *ngIf="selectedProfiler && selectedProfiler.profilerInfo.id === profiler.profilerInfo.id" (click)="selectedProfiler = null"></i>
+                          <span (click)="showProfilerConfig($event, profiler)"> {{profiler.profilerInfo.displayName}} </span>
+                        </td>
+                        <td>{{profiler.profilerInfo.version}}</td>
+                        <td>{{profiler.assetsCount}}</td>
+                        <td class="numeric-column">
+                                                <span class="toggle-active" (click)="toggleActive(profiler.profilerInfo)">
+                                                    <span>{{(profiler.profilerInfo.active)?'Active ':'Inactive '}}</span>
+                                                    <i class="fa" [ngClass]="(profiler.profilerInfo.active)?'fa-toggle-on':'fa-toggle-off'"></i>
+                                                </span>
+                        </td>
+                      </tr>
+                      <ng-container *ngIf="selectedProfiler && selectedProfiler.profilerInfo.id === profiler.profilerInfo.id">
+                      <ng-container *ngIf=" profilerHistoryData && profilerHistoryData.length">
+                        <tr class="hwx-white-bg no-hover" style="margin-top: 10px; padding: 15px;">
+                          <td colspan="4">
+                            <div class="profiler-history-container">
+                              <div class="summary-wrapper">
+                                <div *ngIf="selectedProfilerInfo.profilerInstance.profilerConf && selectedProfilerCronConfig">
+                                  <div class="summary"> <span> Status: </span> <span class="value">{{selectedProfilerInfo.profilerInstance.active ? 'Active' : 'Disabled'}} </span> </div>
+                                  <div class="summary"> <span> Queue: </span> <span class="value">{{selectedProfilerInfo.profilerInstance.queue}} </span> </div>
+                                  <div class="summary" *ngIf="selectedProfilerCronConfig.cronExpr.length > 0"> <span> Schedule: </span> <span class="value">{{selectedProfilerCronConfig.cronExpr}} </span> </div>
+                                  <div class="summary" *ngIf="selectedProfilerInfo.profilerInstance.profilerConf.numExecutors"> <span> Number of Executors: </span> <span class="value">{{selectedProfilerInfo.profilerInstance.profilerConf.numExecutors}} </span> </div>
+                                  <div class="summary" *ngIf="selectedProfilerInfo.profilerInstance.profilerConf.executorCores"> <span> Number of Cores: </span> <span class="value">{{selectedProfilerInfo.profilerInstance.profilerConf.executorCores}} </span> </div>
+                                  <div class="summary" *ngIf="selectedProfilerInfo.profilerInstance.profilerConf.executorMemory"> <span> Executor Memory: </span> <span class="value">{{selectedProfilerInfo.profilerInstance.profilerConf.executorMemory}} </span> </div>
+                                  <div class="summary" *ngIf="selectedProfilerInfo.profilerInstance.profilerConf.driverMemory"> <span> Driver Memory: </span> <span class="value">{{selectedProfilerInfo.profilerInstance.profilerConf.driverMemory}} </span> </div>
+                                </div>
+                              </div>
+                              <div class="chart-wrapper">
+                                <div class="hwx-subtitle">Job History</div>
+                                <div class="flex-grid status-graph" style="text-align: center;">
+                                  <div *ngFor="let data of profilerHistoryData;">
+                                    <div class="grap" [ngClass]="(data.status==='allPass')?'hwx-success':((data.status==='failed')?'hwx-error':'hwx-warning')">
+                                      <i class="fa fa-circle"></i>
+                                    </div>
+                                    <div class="stat">{{data.assetsProfiled}}</div>
+                                    <div class="dat">{{data.displayDate}}</div>
+                                  </div>
+                                  <div>
+                                    <div style="display: flex;justify-content: space-around;">
+                                      <div class="donut-chart">
+                                        <div class="slice one"></div>
+                                        <div class="slice two"></div>
+                                        <div class="chart-center">
+                                          <svg #piChart class="" style="width:150px;margin-top:-20px;"></svg>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="stat" style="margin:-75px 0 60px 0">{{todaysProgressPersentage}}%</div>
+                                    <div class="stat">In Progress</div>
+                                    <div class="dat">Today</div>
+                                    <div class="indicator"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                      <ng-container *ngIf="profilerHistoryData && profilerHistoryData.length === 0">
+                        <tr class="hwx-white-bg no-hover" style="margin-top: 10px; padding: 15px;">
+                          <td colspan="4">
+                            <div>{{'History data not available for ' + selectedProfiler.profilerInfo.displayName }}</div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                      <ng-container *ngIf="!profilerHistoryData">
+                        <tr class="hwx-white-bg no-hover" style="margin-top: 10px; padding: 15px;">
+                          <td colspan="4">
+                            <div>Loading ...</div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                      </ng-container>
+                    </ng-container>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+            <div class="progress" *ngIf="saveProfilerConfigMessages.length > 0">
+              <div class="message-wrapper">
+                <div class="message-details-wrapper" *ngFor="let saveProfilerMessage of saveProfilerConfigMessages">
+                  <div class="message">
+                    <span (click)="saveProfilerMessage.showDetails = !saveProfilerMessage.showDetails" *ngIf="saveProfilerMessage.details.length > 0">
+                      <i class="fa" [ngClass]="{'fa-caret-right': !saveProfilerMessage.showDetails, 'fa-caret-down': saveProfilerMessage.showDetails}" aria-hidden="true"></i>
+                    </span>
+                    {{saveProfilerMessage.message}}
+                    <span>
+                      <i *ngIf="saveProfilerMessage.status === 'INPROGRESS'" class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                      <i *ngIf="saveProfilerMessage.status === 'DONE'" class="fa fa-check" aria-hidden="true"></i>
+                      <i *ngIf="saveProfilerMessage.status === 'FAILED'" class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                  <div class="details" *ngIf="saveProfilerMessage.details.length > 0 && saveProfilerMessage.showDetails"> {{saveProfilerMessage.details}} </div>
+                </div>
+              </div>
+              <div class="margin-top-20">
+                <button  class="mdl-button btn-hwx-default pull-right" (click)="onCloseSaveMessages()">{{"common.close" | translate}}</button>
+              </div>
+            </div>
+
+            <div class="confirmation" *ngIf="showReplicationDialog">
+
+              <div class="message"> {{'Choose from list of clusters bellow, on which you wish to apply the profiler configurations of'}} <b>{{primaryLake.name+', '+primaryLake.dcName}}</b></div>
+              <div class="greyBox">
+                <div *ngFor="let lake of clusters;" [class.hideMe]="lake === primaryLake">
+                  <div class="clusterName"><input type="checkbox" [ngModel]="resolveSelectLakeCheck(lake)" (change)="onLakeCheckboxChange(lake, $event.target.checked)"/>&nbsp;<b>{{lake.name+', '+lake.dcName}}</b></div>
+                  <div class="copyWithMsg">copy</div>
+                  <div class="copyQueue"><input type="checkbox" [ngModel]="resolveCopyCheck(lake, 'copyQueue')" (change)="onCopyCheckboxChange(lake, 'copyQueue', $event.target.checked)"/>&nbsp;queue&nbsp;&nbsp;</div>
+                  <div class="copyCron"><input type="checkbox" [ngModel]="resolveCopyCheck(lake, 'copyCron')" (change)="onCopyCheckboxChange(lake, 'copyCron', $event.target.checked)"/>&nbsp;schedule&nbsp;&nbsp;</div>
+                  <div class="copyAdvanced"><input type="checkbox" [ngModel]="resolveCopyCheck(lake, 'copyAdvanced')" (change)="onCopyCheckboxChange(lake, 'copyAdvanced', $event.target.checked)"/>&nbsp;advanced settings</div>
+                  <div style="clear:both;margin:0px;"></div>
+                </div>
+                <a (click)="selectAllOptionsForReplication()">Select all</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a (click)="clearAllOptionsForReplication()">Clear all</a>
+              </div>
+              <div *ngIf="noClusterSelected" style="color:red;">Select atleast one of the above clusters.</div>
+              <br/>
+              <div class="margin-top-20 pull-left">
+                <button class="mdl-button btn-hwx-primary margin-right-10" (click)="applyConfigToSelectedClusters()">{{"common.apply" | translate}}</button>
+                <button  class="mdl-button btn-hwx-default" (click)="showReplicationDialog = false">{{"common.done" | translate}}</button>
+              </div>
+            </div>
+					</div>
+

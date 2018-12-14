@@ -1,0 +1,55 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+<div class="add-tags">
+  <div class="add-tags-header">
+    <span> Tags </span>
+    <span>
+      <!--<i class="fa fa-plus" (click)="onAddTagClick()"></i>-->
+      <i class="fa fa-search" (click)="onSearchClick()"></i>
+      <i class="fa fa-times-circle" (click)="onCloseAddTagsDialog()"></i>
+    </span>
+  </div>
+  <div class="add-tags-content">
+    <div class="controls">
+      <input type="text" placeholder="Search" *ngIf="showSearch" [(ngModel)]="search" (keyup)="onSearch($event)">
+      <!--<input type="text" placeholder="Enter tag name" *ngIf="showAddTag" [(ngModel)]="addTag" (keydown.enter)="onAddTag($event)">-->
+    </div>
+    <div class="radioOptionCont" *ngIf="tagFilter">
+      <input type="radio" id="selectDP" name="tagType" [checked]="tagFilter == 'system'" (click)="tagFilter='system'"/><label for="selectDP">System Tags</label>
+      <input type="radio" id="selectManaged" name="tagType" [checked]="tagFilter == 'managed'" (click)="tagFilter='managed'"/><label for="selectManaged">Managed Tags</label>
+    </div>
+    <div *ngFor="let tag of tags" style="padding:5px 10px;" [class.hidden]="checkTagHidden(tag)">
+      <div (click)="onAddTagCheckBoxClick(tag)">
+        <span> <input type="checkbox" [checked]="tag.status === assetTagStatus.ACCEPTED || tag.status === assetTagStatus.SUGGESTED || tag.status === assetTagStatus.MANAGED"></span>
+        <span class="label"> {{tag.name | displayDPTag}} </span>
+      </div>
+      <div class="attributeCont" *ngIf="!tag.isDpTag && checkedTagsName.indexOf(tag.name) != -1">
+        <div *ngFor="let def of tag.attributeDefs">
+          <span style="margin-left:25px;line-height:2">{{def.name}}</span>
+          <span *ngIf="!def.isOptional" style="color:red;">*</span>:
+          <span style="font-size:10px;"> ({{def.typeName}})</span>
+          <input [(ngModel)]="tag.attributes[def.name]" style="height: 22px;float:right;padding:2px;width:124px;margin-top:2px;"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

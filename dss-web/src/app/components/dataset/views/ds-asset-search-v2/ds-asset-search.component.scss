@@ -1,0 +1,243 @@
+/*!
+ *   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+ *
+ *   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+ *
+ *   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+ *   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+ *   properly licensed third party, you do not have any rights to this code.
+ *
+ *   If this code is provided to you under the terms of the AGPLv3:
+ *   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *     FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+ *     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+ *     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+ *     OR LOSS OR CORRUPTION OF DATA.
+ */
+
+@import "../../../../../styles/variables";
+
+.assetSearch {
+	height:100%;
+	width:100%;
+}
+
+.modal-footer{
+	position: fixed;
+    bottom: 30px;
+    left: 30px;
+    right: 30px;
+    text-align: left;
+    background: #fff;
+    padding: 10px 15px;
+    border-top: 1px solid #cfd3d7;
+    align-items: center;
+}
+
+.flex-grid {
+    display: flex;
+}
+
+.selected-items-container {
+	color: #666;
+    position: relative;
+    padding: 2px 2px 2px 10px;
+    border: 1px solid #429929;
+}
+
+.mdl-button {
+	margin-left:10px;
+}
+
+.refine-search {
+    min-width: 220px;
+    background: #cdcdcd;
+    min-height: calc(100vh - 260px);
+}
+
+.result-list {
+    flex-grow: 1;
+    background: #fff;
+}
+
+.refine-search .title {
+    background: #3FAE2A;
+    color: #fff;
+    padding: 10px 15px;
+    min-height: 34px;
+}
+
+.filter-section-group {
+    overflow: auto;
+    max-height: calc(100vh - 155px);
+}
+
+.refine-close-button, .refine-open-button {
+    padding: 0;
+    color: #fff !important;
+    cursor: pointer;
+    border: none;
+    font-size: 13px;
+    position: relative;
+    top: -3px;
+    right: -5px;
+    background: transparent;
+}
+
+.refine-search .filter-section {
+    padding: 15px;
+}
+
+.refine-search .filter-header {
+    margin-bottom: 10px;
+}
+
+.hwx-subtitle {
+    font-size: 16px;
+    color: #333;
+    margin: 5px 0;
+}
+
+.clear-filter {
+    cursor: pointer;
+    color: #1491C1;
+    font-size: 12px;
+}
+
+.filter-section input[type=text] {
+	width:100%;
+}
+
+.result-list .title {
+    background: #c6cacf;
+    padding: 7px 15px 4px;
+    height: 34px;
+}
+
+table.scroll thead, table.scroll tfoot {
+    background: #fff;
+    display: table;
+    width: 100%;
+    width: calc(100%);
+}
+
+table.scroll tbody {
+    overflow: auto;
+    overflow-x: hidden;
+    display: block;
+    width: 100%;
+}
+.pagination {
+	margin-top: 4px;
+	text-align:right;
+	Padding:0px 20px;
+}
+.pagination > div {
+    display: inline-block;
+}
+.pagination select {
+	height:20px;
+}
+
+table td {
+    border-top: 1px solid;
+}
+table tr td {
+    border-color: #edeced;
+}
+table tr:first-child td {
+    border-color: #cbcbcb;
+}
+table th, table td {
+    text-align: left;
+    padding: 6px;
+    font-size: 12px;
+}
+table th {
+    color: #999;
+    font-weight: normal;
+}
+table td {
+    border-top: 1px solid;
+}
+table tr td {
+    border-color: #edeced;
+}
+
+.search-component > input[type="text"] {
+    padding-left: 30px;
+    border-color: #d0dad7;
+    width: 100%;
+}
+
+.search-component i {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.queryResultCont .noSearchMessage {
+  display: table;
+  text-align: center;
+  width:100%;
+  height: 100%;
+}
+.queryResultCont .noSearchMessage > span {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/deep/ .ngui-auto-complete > ul li {
+  &.item {
+
+  }
+  &.item.selected {
+    color: white;
+    background-color: rgb(80, 100, 105);
+  }
+  &.item:hover {
+    color: white;
+    background-color: rgb(133,191,253);
+  }
+}
+
+
+
+
+
+
+.assetSearch{
+	padding-top:34px;
+	padding-bottom:61px;
+}
+.search-component{
+	margin-top:-34px;
+}
+.search-result{
+	height:100%;
+}
+.result-list{
+	padding-top:34px;
+}
+.result-list > .title{
+	margin-top:-34px;
+}
+.queryResultCont{
+	height:100%;
+}
+.refine-search{
+	padding-top:34px;
+}
+.refine-search > .title{
+	margin-top:-34px;
+}
+.filter-section-group{
+	height:100%;
+}
+
+

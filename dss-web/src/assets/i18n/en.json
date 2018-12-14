@@ -1,0 +1,319 @@
+{
+  "common": {
+    "actions": "Actions",
+    "close": "Close",
+    "confirm": "Confirm",
+    "dashboard": "Dashboard",
+    "dataplane": "DataPlane",
+    "clusters": "Clusters",
+    "datasets": "Asset Collection",
+    "datalake": "Datalake",
+    "services": "Services",
+    "location": "Location",
+    "tags": "Tags",
+    "step": "Step",
+    "description": "Description",
+    "new": "New",
+    "add": "Add",
+    "edit": "Edit",
+    "update": "Update",
+    "delete": "Delete",
+    "refresh": "Refresh",
+    "addAndNew": "Add & New",
+    "cancel": "Cancel",
+    "back": "BACK",
+    "go": "Go",
+    "clear": "Clear",
+    "reset": "Reset",
+    "search": "Search",
+    "done": "Done",
+    "remove": "Remove",
+    "removeAll": "Remove All",
+    "advanced": "Advanced",
+    "status": "Status",
+    "loading": "Loading",
+    "name": "Name",
+    "moreLink": "Learn More",
+    "information": "Information",
+    "save": "SAVE",
+    "ok": "OK",
+    "apply": "APPLY",
+    "failed": "Failed",
+    "defaultRequiredFields": "Please fill in mandatory fields marked with '*'",
+    "sidenav": {
+      "analyst": "Analyst",
+      "infra": "Infra Admin",
+      "dlm": "DLM"
+    },
+    "noResults": "No Results to display.",
+    "pagination": {
+      "rowsPerPage": "Items per page"
+    },
+    "roles": {
+      "SUPERADMIN": "DataPlane Admin",
+      "INFRAADMIN": "Infra Admin",
+      "CURATOR": "Data Steward"
+    },
+    "serviceNameMappings" : {
+      "BEACON": "Data Lifecycle Manager Engine"
+    },
+    "signout": "Sign Out",
+    "unauthorized": "Unauthorized",
+    "unauthorizedMessage": "You are not authorized to view this page.",
+    "serviceDisabled": "Service Not Enabled",
+    "serviceDisabledMessage": "This service has not been enabled by your Admin. Please contact your DataPlane Administrator to enable it.",
+    "invalidUser": "You are not an authorized DataPlane user. Please contact your DataPlane Administrator.",
+    "noMatch": "No Match found...",
+    "searching": "Searching...",
+    "unable-to-fetch-chart-data": "Unable to fetch data for plotting the chart",
+    "no-chart-data": "Data not available for plotting the chart"
+
+  },
+  "pages": {
+    "signin" :{
+      "description": {
+        "invalidCredentials":"Credentials were incorrect. Please try again.",
+        "systemError": "System Error"
+      }
+    },
+    "services": {
+      "labels": {
+        "enabledServices": "Enabled Services",
+        "availableServices": "Available Services",
+        "smartSenseId": "SMARTSENSE ID",
+        "enabled": "ENABLED",
+        "enable": "ENABLE",
+        "next": "Next",
+        "verify": "Verify",
+        "verifySmartSenseId": "Verify SmartSense ID",
+        "verified": "VERIFIED",
+        "lastUpdated": "Last Updated",
+        "serviceSummary": "SERVICE STATUS SUMMARY",
+        "action": "Action",
+        "installationSteps": "Steps for Installation:",
+        "installationLink":"Installation Steps.",
+        "installationStepsDoc":"http://horton.works/dps100_h0007a",
+        "dependentServicesLabel":"DEPENDENT SERVICES:",
+        "syncFailed":"Cluster Information could not be fetched",
+        "serviceEnabled":"Service Enabled successfully",
+        "optional":"Optional",
+        "addOptionalServices":"Add Optional Services",
+        "dpServices": "DATAPLANE SERVICES"
+      },
+      "description": {
+        "verificationWelcome": "Welcome to {{serviceName}} Enablement Wizard. Please begin with verifying your SmartSense ID.",
+        "manualInstall" : "Service <b>{{serviceName}}</b> is not enabled on cluster <b>{{clusterName}}</b> as one or more of the dependent services have not been enabled.",
+        "installOptionalService":"Service <b>{{serviceName}}</b> is enabled on cluster <b>{{clusterName}}</b>. However one or more of the optional services have not been enabled.",
+        "installDependentService":"Please enable the dependent services on the cluster using the documentation link.",
+        "verifyDependency":"After all the dependent services are installed on the cluster, please click on the verification check box.",
+        "enableError": "Service could not be enabled.",
+        "verificationError": "Incorrect SmartSense ID format",
+        "installationConfirmation":"All the dependent services have been installed on cluster <b>{{clusterName}}.</b>",
+        "installationLink": "For detailed steps on the installation process, please visit ",
+        "verifyingStatus": "Verifying dependent services status on the cluster...",
+        "allDependenciesMet":"All the service dependencies are met. Please click Next to continue.",
+        "mandatoryDependenciesMet":"All the mandatory service dependencies are met.",
+        "optionalInstallation":"Optionally, you can install the following services to perform additional functions on the cluster.",
+        "errorStatus":"The following dependent service(s) information is not present on the cluster. Please install them to continue.",
+        "serviceEnabled": "All the authorized users of {{serviceName}} service, should re-login to be able to access the service."
+      }
+    },
+    "dataset": {
+      "asset-query": {
+        "filter": {
+          "source": "Select Source",
+          "string": "Enter Text",
+          "boolean": "Select",
+          "date": "YYYY-MM-DD",
+          "tag": "Start typing to refine"
+        }
+      },
+      "topnav": {
+        "unclassified": "Unclassified",
+        "assets": "Assets",
+        "audits": "Audits"
+      },
+      "labels": {
+        "editError": "Edit initiated by other user is in progress, retry after some time.",
+        "saveError": "Could not save the asset collection. Ensure Profiler Service is running on the cluster and try again.",
+        "confirmDelete": "Delete Confirmation",
+        "messageDelete": "Are you sure you want to delete asset collection <strong>{{datasetName}}</strong>?",
+        "successfullyDeleted": "<strong>{{datasetName}}</strong> was successfully deleted.",
+        "newDataset": "Add Asset Collection",
+        "addFavourites": "Add to Favourites",
+        "removeFavourites": "Remove from Favourites",
+        "creator": "Creator",
+        "hive": "Hive",
+        "files": "Files",
+        "name": "Name",
+        "createdBy": "Created By",
+        "hdfsFiles": "HDFS Files",
+        "hiveTables": "Hive Tables",
+        "emptySearchResult": "There are no asset collection that match your search.",
+        "source": "Source",
+        "owner": "Owner",
+        "createdTime": "Created Time",
+        "noOfRows": "Number Of Rows",
+        "datatype": "Data Type",
+        "selectOperator": "Select Operator",
+        "addAssets": "Add Assets",
+        "description": "Description",
+        "belongsTo": "Belongs To",
+        "dbName": "Database Name",
+        "resourceBasedPolicies": "Resource Based Policies",
+        "tagBasedPolicies": "Tag Based Policies"
+      },
+      "ds-editor": {
+        "ds-description": "Organize your hive assets into logical groups for subsequent usage.",
+        "information": "Information",
+        "assets": "Assets",
+        "summary": "Summary",
+        "fillMandatoryMsg": "Please fill mandatory fields",
+        "tagDescription": "Add tags to your asset collection for context and subsequent lookup",
+        "asset-description": "Add related data assets into your asset collection, by searching across this Data-Lake",
+        "create-error": "Unable to create asset collection:",
+        "action": {
+          "next": "Next",
+          "save": "Save",
+          "cancel": "Cancel",
+          "edit": "Edit",
+          "delete": "Delete",
+          "addAssets": "Add Assets",
+          "removeAll": "Remove All",
+          "remove": "Remove",
+          "addMoreAssets": "Add More Assets",
+          "add": "Add",
+          "done" : "Done"
+        },
+        "errors": {
+          "unique": "An asset collection with this name already exists. Please choose a different name."
+        }
+      },
+      "asset-search": {
+        "search": "Search",
+        "advanced": "Advanced",
+        "filter": "Filter",
+        "reset": "Reset",
+        "emptySearchMsg": "Empty Search not allowed",
+        "noSearchMsg": "Please search for assets above or use Advanced Search",
+        "noResultsMsg": "No Results!!",
+        "noMoreResultsMsg": "No More Results!!",
+        "cancel": "Cancel",
+        "done": "Done",
+        "add": "Add"
+      },
+      "asset-list": {
+        "starAssetmessage": "Few assets listed above are already part of the collection."
+      },
+      "dashboard": {
+        "tag-nav": {
+          "tagSearchPlaceHolder": "Filter by Tags"
+        },
+        "actions": {
+          "addToFav": "Add to Favourites",
+          "remFromFav": "Remove from Favourites"
+        }
+      },
+      "asset-collection": {
+        "no-of-tables": "Number of Tables",
+        "no-of-profiled-tables": "Number of Tables Profiled",
+        "no-of-sensitive-tables": "Number of Tables with Sensitive Data",
+        "unsecured-assets": "Number of Unsecured Assets",
+        "no-of-new-tags": "Number of New Tags Added",
+        "top-10-users": "Top 10 Users by Volume of Access",
+        "sensitive-vs-non-sensitive": "Asset Collection Sensitivity Profiling Status",
+        "asset-distribution-by-sensitive-tag": "Sensitive Data Types Distribution in Asset Collection",
+        "no-of-quires-running-sensitive-data": "Number of Queries using Sensitive Data",
+        "users-accessing-sensitive-data": "Sensitive Data Access Trend",
+        "times-user-accessed-any-data": "Number of times user accessed any data",
+        "tables-in-asset-collection-with-tag": "Number of tables in asset collection with this tag",
+        "times-secure-data-accessed": "Number of times Secure Data is accessed"
+      },
+      "data-lake-dashboard": {
+        "no-of-total-assets" : "Total Number of Hive Table Assets",
+        "profiled-vs-non-profiled" : "Datalake Asset Profiling Summary",
+        "sensitive-data" : "Assets Sensitivity in Datalake",
+        "profiler-jobs" : "Sensitivity Profiler Execution Status",
+        "secure-data" : "Datalake Asset Sensitivity Profiling Summary",
+        "top-10-asset-collections" : "Top 10 Asset Collections by Access",
+        "top-10-assets" : "Top 10 Assets by Access"
+      },
+      "asset-view-overview": {
+        "no-of-rows": "Number of Rows",
+        "no-of-columns": "Number of Columns",
+        "sensitive-column": "Sensitive Columns",
+        "no-of-partition": "Number of Partitions",
+        "top-10-users": "Top 10 Users",
+        "new-partitions-added": "New partitions added",
+        "times-table-accessed": "Times table accessed",
+        "times-wrote": "Times wrote",
+        "allowed-unauthorised-access": "Access Request Summary by Action",
+        "select-vs-update": "Access Summary by Operation Type"
+      },
+      "asset-view-aside": {
+        "table-properties": "Table Properties",
+        "owner": "Owner",
+        "qualified-name":"Qualified Name",
+        "table-type":"Table Type",
+        "datalake":"Datalake",
+        "database":"Database",
+        "created-on":"Created On",
+        "last-modified":"Last Modified",
+        "system-tags": "System Tags",
+        "table-tags": "Managed Classifications",
+        "profilers": "Profilers"
+      },
+      "asset-details-schema": {
+        "edit-tags": "Edit Tags"
+      }
+    },
+    "comments": {
+      "collaborate": "Collaborate",
+      "fetchErrorMsg": "Could not fetch related Comments",
+      "noComments": "No Comments yet"
+    },
+    "not_found": {
+      "message": "This page does not exist.",
+      "link_text": "Click here to return to home page."
+    }
+  },
+  "routes": {
+    "dss": "Data Steward",
+    "dashboard": "Dashboard",
+    "dss.assets.cAsset": "Asset Details",
+    "dss.collections": "Asset Collections",
+    "dss.bookmarks": "Bookmarks",
+    "dss.collections.add": "Add",
+    "dss.collections.cCollection": "Details",
+    "dss.collections.cCollection.edit": "Edit",
+
+    "infra": "Admin",
+    "infra.clusters": "Clusters",
+    "infra.clusters.add": "Add",
+    "infra.clusters.cCluster": "Details",
+    "infra.clusters.cCluster.edit": "Edit",
+    "infra.services": "Services",
+    "infra.services.add": "Add",
+    "infra.services.cService.verify": "Verify",
+    "infra.access.users": "Users",
+    "infra.access.groups": "Groups",
+    "infra.access.identity_provider_edit": "Edit LDAP",
+
+    "onboard": "Onboard",
+    "onboard.welcome": "Welcome",
+    "onboard.identity_provider": "Configure LDAP",
+    "onboard.users_and_groups": "Configure Access",
+
+    "profile": "Profile",
+    "profile.password_change": "Change password",
+
+    "not_found": "Not Found",
+    "unauthorized": "Unauthorized",
+    "service_not_enabled": "Service not enabled",
+    "profilers": "Profilers"
+  },
+  "titles": {
+    "core": "DataPlane Service",
+    "dss": "Data Steward Studio"
+  }
+}

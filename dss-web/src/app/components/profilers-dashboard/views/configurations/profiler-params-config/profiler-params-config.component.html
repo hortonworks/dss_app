@@ -1,0 +1,94 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="load-right-to-left-slider dialog1x">
+  <div class="title-container">
+    <div class="hwx-subtitle">
+      <span>{{profilerDisplayName}}</span>
+      <i id="back" class="fa fa-remove close-icon" (click)="onClose()"></i>
+    </div>
+  </div>
+  <div class="status-container">
+    <dss-toggle-switch [(value)]="profilerStatus"></dss-toggle-switch>
+    <div class="bold"> {{profilerStatus ? 'Active' : 'Disabled'}}</div>
+  </div>
+  <div class="config">
+
+    <div class="form-group">
+      <label class="required">Queue</label>
+      <select class="q-name" [(ngModel)]="profilerInstanceConfig.profilerInstance.queue">
+        <option *ngFor="let key of yarnQueueList">{{key}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="required">Schedule</label>
+      <input type="text" class="q-name" [(ngModel)]="cronConfig.cronExpr">
+    </div>
+
+    <div class="form-group" *ngIf="profilerSampleSizeAvailable.indexOf(profilerInstanceConfig.profilerInstance.name) !== -1">
+      <label class="required">Sample Data Size </label>
+      <div class="input-group">
+        <select class="first-child">
+          <option *ngFor="let key of profilerSampleSizeAttributes[profilerInstanceConfig.profilerInstance.name]">{{key}}</option>
+        </select>
+        <input *ngIf="profilerInstanceConfig.profilerInstance.name === 'sensitiveinfo'" class="last-child" type="text" [(ngModel)]="profilerInstanceConfig.profilerInstance.jobConf.sampleSize">
+        <input *ngIf="profilerInstanceConfig.profilerInstance.name === 'tablestats'" class="last-child" type="text" [(ngModel)]="profilerInstanceConfig.profilerInstance.jobConf.samplepercent">
+      </div>
+    </div>
+
+    <div class="advanced">
+      <div (click)="advancedPaneShow = !advancedPaneShow" class="advanced-tab">
+        <span class="form-title"> <i class="fa" [ngClass]="{'fa-chevron-down' : advancedPaneShow, 'fa-chevron-up': !advancedPaneShow}" aria-hidden="true"></i> Advanced Options </span>
+      </div>
+      <div class="form" *ngIf="advancedPaneShow && profilerInstanceConfig.profilerInstance.profilerConf">
+        <div class="row">
+          <label> Number of Executors </label>
+          <input type="text" (keypress)="allowOnlyNumbers($event)" [(ngModel)]="profilerInstanceConfig.profilerInstance.profilerConf.numExecutors">
+        </div>
+        <div class="row">
+          <label> Executor Cores </label>
+          <input type="text" (keypress)="allowOnlyNumbers($event)" [(ngModel)]="profilerInstanceConfig.profilerInstance.profilerConf.executorCores">
+        </div>
+        <div class="row">
+          <label> Executor Memory (in GB)</label>
+          <input type="text" (keypress)="allowOnlyNumbers($event)" [(ngModel)]="profilerInstanceConfig.profilerInstance.profilerConf.executorMemory">
+        </div>
+        <div class="row">
+          <label> Driver Core </label>
+          <input type="text" (keypress)="allowOnlyNumbers($event)" [(ngModel)]="profilerInstanceConfig.profilerInstance.profilerConf.driverCores">
+        </div>
+        <div class="row">
+          <label> Driver Memory (in GB)</label>
+          <input type="text" (keypress)="allowOnlyNumbers($event)" [(ngModel)]="profilerInstanceConfig.profilerInstance.profilerConf.driverMemory">
+        </div>
+      </div>
+    </div>
+
+    <div class="margin-top-20">
+      <button class="mdl-button btn-hwx-primary margin-right-10" (click)="save()">{{"common.save" | translate}}</button>
+      <button  class="mdl-button btn-hwx-default" (click)="onClose()">{{"common.cancel" | translate}}</button>
+    </div>
+  </div>
+
+</div>
+

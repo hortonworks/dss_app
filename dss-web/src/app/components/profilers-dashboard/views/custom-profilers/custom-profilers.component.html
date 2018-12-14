@@ -1,0 +1,150 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+
+
+<div class="flex-grid" style="position:relative;">
+  <div class="flex-side flex-side-left" style="min-width: 200px;">
+    <div class="section-white">
+      <div class="section-title flex-grid">
+        <span class="primary-space hwx-subtitle">Rule Groups</span>
+      </div>
+      <div>
+        <table class="mdl-data-table selectable" id="ClusterList">
+          <tbody>
+          <tr *ngFor="let group of groups" [class.active]="group === activeGroup" (click)="activeGroup = group;">
+            <td>{{groupDisplay[group]}}</td>
+            <td class="numeric-column">{{getGroupRules(group).length}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="flex-main">
+    <div class="section-white">
+      <div class="section-title flex-grid">
+        <div class="primary-space">
+          <div class="search-component" style="margin-right: 10px">
+            <i class="fa fa-search"></i>
+            <input type="text" title="Search" class="form-control" placeholder="Type to search" [(ngModel)]="searchStr">
+          </div>
+        </div>
+        <div class="utility-space">
+          <button class="mdl-button btn-hwx-primary" (click)="launchPopup(null);"><i class="fa fa-plus"></i> New</button>
+        </div>
+      </div>
+      <div class="section-content" style="padding: 15px;">
+        <table id="CustomProfilers">
+          <colgroup width="50"></colgroup>
+          <thead>
+          <tr>
+            <th><input type="checkbox" class="checkbox" title="select"></th>
+            <th><span>Name</span></th>
+            <th><span>Version</span></th>
+            <th><span>Description</span></th>
+            <th><span>Associated Tags</span></th>
+            <th><span>Created By</span></th>
+            <th><span># of Cluster</span></th>
+            <th><span>Status</span></th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let attrs of getGroupRules(activeGroup)">
+            <tr *ngIf="showRow(attrs)" [class.highlightFadeOut]="attrs.rule.id == newRuleId" style="position: relative;" (mouseleave)="dismissTestInfo()">
+              <td><input type="checkbox" class="checkbox" title="select"></td>
+              <!--<td class="key-column hwx-external">{{attrs.rule.name}}</td>-->
+              <td>{{attrs.rule.name}}</td>
+              <td>{{attrs.rule.version || "1.1"}}</td>
+              <td>{{attrs.rule.description}}</td>
+              <td><span class="tagProxy" *ngFor="let tag of attrs.tags">{{tag.name}}</span></td>
+              <td>{{attrs.user.user_name}}</td>
+              <td>{{attrs.cluster_ids.length || '-'}}</td>
+              <td>
+                <!--<span [class.hideOnHover]="showDeploy(attrs) || showSuspend(attrs)">-->
+                  {{statusDisplayMap[attrs.rule.status]}}
+                <!--</span>-->
+                <span class="actions-right">
+                  <button class="mdl-button btn-hwx-primary smallbutton" (click)="showClusterSelection(attrs)" *ngIf="showDeploy(attrs)">Deploy</button>
+                  <button class="mdl-button btn-hwx-primary smallbutton" (click)="suspendDeploy(attrs)" *ngIf="showSuspend(attrs)">Suspend</button>
+                  <button class="btn btn-icon btn-transparent" (click)="showTestInfo(attrs)" *ngIf="attrs.rule.status === 'TEST_FAILED' || attrs.rule.status === 'TEST_SUCCESS'"><i class="fa fa-info-circle"></i></button>
+                  <button class="btn btn-icon btn-transparent" (click)="reloadRules()" *ngIf="attrs.rule.status === 'TEST_RUNNING'"><i class="fa fa-refresh"></i></button>
+                  <button class="btn btn-icon btn-transparent" (click)="launchPopup(attrs)" *ngIf="editAllowed(attrs)"><i class="fa fa-edit"></i></button>
+                  <button class="btn btn-icon btn-transparent" (click)="deleteRule(attrs)" *ngIf="editAllowed(attrs)"><i class="fa fa-remove"></i></button>
+                </span>
+              </td>
+              <div class="testInfo" *ngIf="showInfoRuleId === attrs.rule.id">
+                <div class="primary-space hwx-subtitle" ><b>Validation Information</b></div>
+                <br/>
+                <div *ngIf="!testData" class="loader"><i class="fa fa-spin fa-spinner"></i></div>
+                <div *ngIf="testData && testData.status == 'SUCCESSFUL'">
+                  <table>
+                    <thead><tr><td>Sample data</td><td>Tags</td></tr></thead>
+                    <tbody>
+                      <tr *ngFor="let obj of testData.result"><td>{{obj.value}}</td><td>{{obj.tags.join(', ')}}</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div *ngIf="testData && testData.status == 'FAILED'">
+                  <div *ngFor="let rsn of testData.responseData.topLevelReasons" style="margin-top:5px;">{{rsn}}</div>
+                </div>
+              </div>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showPopup" class="popup borderBox">
+  <div class="modal-outline" [class.active-wizard]="activatePopup" [class.closing-wizard]="deactivatePopup"></div>
+  <div class="modal-wizard" [class.active-wizard]="activatePopup" [class.closing-wizard]="deactivatePopup">
+    <csp-rule-editor
+        [ruleWithAttributes]="ruleAttrsForEdit"
+        [lakes]="lakes"
+        (cancelNotification)="onHidePopup()"
+        (saveNotification)="onRuleSave($event)"
+    ></csp-rule-editor>
+  </div>
+</div>
+<div class="dialog-mask" *ngIf="showClusterSelectionPopup">
+  <dialog class="mdl-dialog dp-dialog test-run-dialog">
+    <h4 class="mdl-dialog__title hwx-subtitle">Select Lakes to Deploy Rule {{rulesWithAttributesForDeploy.rule.name}}</h4>
+    <div class="greyBox">
+      <div *ngFor="let lake of lakes;" class="checkboxCont">
+        <input type="checkbox" (change)="onLakeCheckboxChange(lake, $event.target.checked)"/>&nbsp;&nbsp;<b>{{lake.name+', '+lake.dcName}}</b>
+        <span *ngIf="deployResult[lake.clusterId] === true" style="float:right;"><i class="fa fa-check"></i> Deployment Success</span>
+        <span *ngIf="deployResult[lake.clusterId] === false" style="float:right;"><i class="fa fa-times"></i> Deployment Failure</span>
+      </div>
+    </div>
+    <br/>
+    <div class="action-button-container" *ngIf="showDeployAction">
+      <button type="button" class="mdl-button btn-hwx-default" (click)="hideClusterSelection();">Cancel</button>
+      <button type="button" class="mdl-button btn-hwx-primary" (click)="deploy()">Deploy</button>
+    </div>
+    <div class="action-button-container" *ngIf="!showDeployAction">
+      <button type="button" class="mdl-button btn-hwx-default" (click)="revertDeploy()">Revert All</button>
+      <button type="button" class="mdl-button btn-hwx-primary" (click)="hideClusterSelection()">Done</button>
+    </div>
+  </dialog>
+</div>

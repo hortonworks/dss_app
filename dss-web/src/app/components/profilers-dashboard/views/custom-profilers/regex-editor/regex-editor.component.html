@@ -1,0 +1,70 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+
+<div class="content">
+  <div class="flex-grid">
+    <div class="primary-space">
+      <div class="hwx-title">Regular Expression Editor</div>
+    </div>
+    <div class="utility-space">
+      <button type="button" class="mdl-button btn-hwx-primary" (click)="saveResource()">Save</button>
+      <button type="button" class="mdl-button btn-hwx-default" (click)="notifyToggle()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="hwx-form" style="padding: 0">
+    <div class="form-field">
+      <label for="regexName">Name</label>
+      <input class="form-control full" type="text" id="regexName" [(ngModel)]="model.name" placeholder="Untitled">
+    </div>
+    <div class="flex-grid">
+      <div class="primary-space" style="width: 60%; margin-right: 10px;">
+        <div class="form-field">
+          <div class="pull-right match-count">{{matchCount}} Match</div>
+          <div class="hwx-subtitle">Regular Expression</div>
+        </div>
+        <div class="form-field">
+          <textarea class="form-control full" type="text" [(ngModel)]="model.value" (change)="runRegExMatch()"></textarea>
+        </div>
+        <div class="form-field">
+          <span class="hwx-subtitle">Test String</span>
+          <button type="button" class="mdl-button btn-hwx-default pull-right" (click)="runTest()">Test</button>
+          <div style="clear:both"></div>
+        </div>
+        <div class="form-field" style="height: 100%">
+          <textarea class="form-control full" style="height: 100%" [(ngModel)]="model.sampleData" (change)="runRegExMatch()"></textarea>
+        </div>
+      </div>
+      <div class="primary-space" style="max-width: 40%">
+        <div class="form-field">
+          <div class="hwx-subtitle">Match Information</div>
+        </div>
+        <div class="form-field" style="height: 150%">
+          <textarea class="form-control full" style="height: 100%" [(ngModel)]="outputStr" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

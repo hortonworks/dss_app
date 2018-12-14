@@ -1,0 +1,66 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div>
+    <div class="result-viewer">
+        <div class="page-container">
+
+            <div class="hwx-title-panel result-header">
+                <div class="mdl-grid mdl-grid--no-spacing">
+                    <div class="mdl-layout-spacer"></div>
+                    <div class="search-input">
+                        <input id="search" name="search-input" type="text" placeholder="Type to search" [ngModel]="dsNameSearch" (keyup)="dsNameSearchChange($event)" data-se="collection_dashboard__filter"/>
+                        <i *ngIf="!dsNameSearch || dsNameSearch.length === 0" aria-hidden="true" class="fa fa-search dp-input__icon"></i>
+                        <i *ngIf="dsNameSearch && dsNameSearch.length > 0" aria-hidden="true" class="fa fa-times dp-input__icon" (click)="clearSearch()"></i>
+                    </div>
+                    <nav-tag-panel
+                      #tagViewer
+                      (updateSelection)="onTagChange($event)"
+                      [dsNameSearch]="dsNameSearch"
+                      [bookmarkFilter]="bookmarkFilter">
+                    </nav-tag-panel>
+                    <div class="mdl-button-group">
+                        <button (click)="onViewChange(views.grid)" [ngClass]="{'button-color--dark-grey': currentView === views.grid }" class="mdl-button" data-se="collection_dashboard__mode_tile">
+                          <i class="fa fa-th"></i>
+                        </button>
+                        <button (click)="onViewChange(views.list)" [ngClass]="{'button-color--dark-grey': currentView === views.list }" class="mdl-button" data-se="collection_dashboard__mode_list">
+                            <i class="fa fa-list-ul"></i>
+                        </button>
+                    </div>
+                    <div class="addDatasetButtonCont">
+                      <button class="mdl-button btn-hwx-primary pull-right" (click)="actionAddNewDataset()" data-se="collection_dashboard__create">{{("pages.dataset.labels.newDataset" | translate).toUpperCase()}}</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-container">
+                <ds-nav-result-viewer
+                  [view]="currentView"
+                  [currentDsTag]="currentDsTag"
+                  [dsNameSearch]="dsNameSearch"
+                  [bookmarkFilter]="bookmarkFilter"
+                  (onViewRefresh)="onViewRefresh()"
+                ></ds-nav-result-viewer>
+            </div>
+        </div>
+    </div>
+</div>

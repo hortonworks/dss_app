@@ -1,0 +1,116 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="sidebar-panel utility-space" style="float:left">
+  <div class="tabs menu">
+    <div class="section-title">Resources</div>
+    <div class="tab-content" data-content="Tab one">
+      <div class="accordion-panel menu-list">
+        <div class="accordion-title hwx-white-bg">
+          <div class="flex-grid">
+            <div class="primary-space" (click)="toggleAccordian('regEx');">
+              <i class="fa fa-angle-right accordion-fa" [class.fa-angle-down]="regExAccordianOpen"></i><span>Regex</span>
+            </div>
+            <div class="utility-space">
+              <input #regexinput class="regExSearch" [(ngModel)]="regExSearch" >
+              <button class="btn btn-icon btn-transparent">
+                <i class="fa fa-search" [class.fa-times]="regExSearch" (click)="regExSearch=''; regexinput.focus();"></i>
+              </button>
+              <button class="btn btn-icon btn-transparent" (click)="showEditor('regEx')">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-content flex-summary-vertical " [class.open]="regExAccordianOpen">
+          <ul id="Regex">
+            <li *ngIf="!regExResources.length">No Regex Available</li>
+            <ng-container *ngFor="let obj of regExResources">
+              <li *ngIf="obj.name.toLowerCase().indexOf(regExSearch.toLowerCase()) != -1">{{obj.name}}
+                <span class="pull-right" *ngIf="obj.source=='Custom'">
+                  <button class="btn btn-icon btn-transparent" (click)="editRegex(obj)"><i class="fa fa-edit"></i></button>
+                  <button class="btn btn-icon btn-transparent" (click)="deleteResource(obj)"><i class="fa fa-remove"></i></button>
+                </span>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-panel menu-list">
+        <div class="accordion-title hwx-white-bg">
+          <div class="flex-grid">
+            <div class="primary-space" (click)="toggleAccordian('lookup');">
+              <i class="fa fa-angle-right accordion-fa" [class.fa-angle-down]="lookUpAccordianOpen"></i><span>Look Up</span>
+            </div>
+            <div class="utility-space">
+              <input #lookupinput class="lookUpSearch" [(ngModel)]="lookUpSearch" >
+              <button class="btn btn-icon btn-transparent">
+                <i class="fa fa-search" [class.fa-times]="lookUpSearch" (click)="lookUpSearch=''; lookupinput.focus();"></i>
+              </button>
+              <button class="btn btn-icon btn-transparent"  (click)="showEditor('lookup')">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-content flex-summary-vertical " [class.open]="lookUpAccordianOpen">
+          <ul id="Lookup">
+            <li *ngIf="!lookupResources.length">No Lookups Available</li>
+            <ng-container *ngFor="let obj of lookupResources">
+              <li *ngIf="obj.name.toLowerCase().indexOf(lookUpSearch.toLowerCase()) != -1">{{obj.name}}
+                <span class="pull-right" *ngIf="obj.source=='Custom'">
+                  <button class="btn btn-icon btn-transparent" (click)="deleteResource(obj)"><i class="fa fa-remove"></i></button>
+                </span>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-panel menu-list">
+        <div class="accordion-title hwx-white-bg">
+          <div class="flex-grid">
+            <div class="primary-space" (click)="toggleAccordian('algo');">
+              <i class="fa fa-angle-right accordion-fa" [class.fa-angle-down]="algoAccordianOpen"></i><span>Other Algorithms</span>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-content flex-summary-vertical " [class.open]="algoAccordianOpen">
+          <ul id="Algo">
+            <li >Luhn Check</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="tab-content" data-content="Tab two" style="display: none;"></div>
+  </div>
+</div>
+<div class="sidebar-workspace primary-space body" style="float:right; width:calc(100vw - 250px);">
+  <regex-editor
+    [(regExModel)]="regExToEdit"
+    (regExModelChange)="manageChange($event)"
+    (toggleNotifier)="notifyToggle()" *ngIf="showRegExEditor">
+
+  </regex-editor>
+  <lookup-editor (toggleNotifier)="notifyToggle()"
+                 (newFileNotifier)="manageChange($event)"
+                 *ngIf="showLookupEditor"></lookup-editor>
+</div>

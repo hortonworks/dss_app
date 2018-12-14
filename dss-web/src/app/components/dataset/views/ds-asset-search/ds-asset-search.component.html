@@ -1,0 +1,75 @@
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<div class="assetSearch borderBox" #outerCont>
+  <div class="dismissPopup" (click)="actionCancel()"><i class="fa fa-times"></i></div>
+  <div class="tabCont" #tabCont>
+    <div class="tab" [class.active]="activeTab == tabEnum.NORMAL"  (click)="setActiveTab(tabEnum.NORMAL)" data-se="asset_search_tab_basic">{{"pages.dataset.asset-search.search" | translate}}</div>
+    <div class="tab" [class.active]="activeTab == tabEnum.ADVANCE" (click)="setActiveTab(tabEnum.ADVANCE)" data-se="asset_search_tab_advanced">{{"pages.dataset.asset-search.advanced" | translate}}</div>
+    <div style="clear: both"></div>
+  </div>
+  <div class="queryEditorCont" #queryEditorCont>
+    <normlal-query-editor *ngIf="activeTab == tabEnum.NORMAL"
+                          [queryObj]="queryObj"
+                          [queryModel]="queryModel"
+                          [clusterId]="clusterId"
+                          (onQueryObjUpdate)="actionSearch($event)"
+                          (onHeightChange)="onQueryEditorResize($event)"
+                          (onSearchModification) = "showSearchButton($event)"
+                          #basicQueryEditor ></normlal-query-editor>
+    <advance-query-editor *ngIf="activeTab == tabEnum.ADVANCE"
+                          [queryModel]="queryModel"
+                          [clusterId]="clusterId"
+                          (onHeightChange)="onQueryEditorResize($event)"
+                          (onActionDone)="actionSearch($event)"
+                          #advanceQueryEditor ></advance-query-editor>
+    <div style="clear: both"></div>
+  </div>
+  <div class="filterActionCont" *ngIf="!hideSearchButtons">
+    <button class="mdl-button btn-hwx-primary" (click)="actionSearch()" data-se="asset_selection_search">{{"pages.dataset.asset-search.search" | translate}}</button>
+    <button class="mdl-button btn-hwx-default" (click)="actionReset()" *ngIf="showQueryResults" data-se="asset_selection_reset">{{"pages.dataset.asset-search.reset" | translate}}</button>
+    <span class="emptySearchMsg" #emptySearchMsg>{{"pages.dataset.asset-search.emptySearchMsg" | translate}}</span>
+    <div style="clear: both"></div>
+  </div>
+  <div *ngIf="showQueryResults" class="flex-grid resultContTitle">
+      <span>Results</span>
+  </div>
+  <div class="queryResultCont" #queryResultCont>
+    <ds-assets-list-style1 [hideTabs]="true"
+                    [hideSearch]="true"
+                    [queryModels]="queryModel"
+                    [innerListScrollable]="true"
+                    [avoidLoadingOnInit]="true"
+                    [clusterId]="clusterId"
+                    [datasetId]="datasetId"
+                    [allowAssetNavigation]="false"
+                    [showBelongsToColumn]="true"
+                    (onAction)="onListAction($event)"
+                    *ngIf="showQueryResults"                    #dsAssetList></ds-assets-list-style1>
+    <div *ngIf="!showQueryResults" class="noSearchMessage"><span>{{"pages.dataset.asset-search.noSearchMsg" | translate}}</span></div>
+  </div>
+  <div class="actionButtonTopMargin" *ngIf="!hideActionButtons" ></div>
+  <div class="actionButtonCont" *ngIf="!hideActionButtons" >
+    <button *ngIf="showDone" class="mdl-button btn-hwx-primary" (click)="actionDone()">{{"pages.dataset.asset-search.add" | translate}}</button>
+    <button class="mdl-button btn-hwx-default" (click)="actionCancel()">{{"pages.dataset.asset-search.done" | translate}}</button>
+  </div>
+</div>

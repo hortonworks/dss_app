@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+  ~
+  ~   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+  ~
+  ~   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+  ~   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  ~   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+  ~   properly licensed third party, you do not have any rights to this code.
+  ~
+  ~   If this code is provided to you under the terms of the AGPLv3:
+  ~   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+  ~   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+  ~     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+  ~   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+  ~     FROM OR RELATED TO THE CODE; AND
+  ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+  ~     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+  ~     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+  ~     OR LOSS OR CORRUPTION OF DATA.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.hortonworks.dataplane</groupId>
+  <artifactId>dss-web</artifactId>
+  <packaging>pom</packaging>
+  <name>DSS Web</name>
+  <version>0.0.1</version>
+  <description>DSS Web</description>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.rat</groupId>
+      <artifactId>apache-rat-plugin</artifactId>
+      <version>0.11</version>
+    </dependency>
+  </dependencies>
+
+  <properties>
+    <nodemodules.dir>node_modules</nodemodules.dir> <!-- specify -Dnodemodules.dir option to reduce dss-web build time by not re-downloading npm modules -->
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.6</version>
+        <configuration>
+          <installDirectory>target</installDirectory>
+        </configuration>
+
+        <executions>
+
+          <execution>
+            <id>install node and npm</id>
+            <goals>
+              <goal>install-node-and-yarn</goal>
+            </goals>
+            <configuration>
+              <nodeVersion>v8.11.2</nodeVersion>
+              <npmVersion>5.6.0</npmVersion>
+              <yarnVersion>v1.7.0</yarnVersion>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>yarn install</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <configuration>
+              <arguments>install --frozen-lockfile</arguments>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>yarn run build</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
+          </execution>
+
+          <!--<execution>-->
+            <!--<id>DSS Web unit tests</id>-->
+            <!--<phase>test</phase>-->
+            <!--<goals>-->
+              <!--<goal>yarn</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+              <!--<skip>${skipTests}</skip>-->
+              <!--<arguments>run test</arguments>-->
+            <!--</configuration>-->
+          <!--</execution>-->
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <version>0.11</version>
+        <configuration>
+          <licenses>
+            <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+              <licenseFamilyCategory>YASL1</licenseFamilyCategory>
+              <licenseFamilyName>Yet Another Software License (YASL) 1.0</licenseFamilyName>
+              <notes></notes>
+              <patterns>
+                <pattern>(c) 2016-2018 Hortonworks, Inc. All rights reserved.</pattern>
+              </patterns>
+            </license>
+          </licenses>
+          <licenseFamilies>
+            <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+              <familyName>Yet Another Software License (YASL) 1.0</familyName>
+            </licenseFamily>
+          </licenseFamilies>
+          <excludes>
+            <exclude>.idea/**</exclude>
+            <exclude>**/*.json</exclude>
+            <exclude>.angular-cli.json</exclude>
+            <exclude>.editorconfig</exclude>
+            <exclude>dist/**</exclude>
+            <exclude>target/**</exclude>
+            <exclude>vendor/**</exclude>
+            <exclude>node_modules/**</exclude>
+            <exclude>node/**</exclude>
+            <exclude>src/assets/**</exclude>
+            <exclude>npm-debug.log</exclude>
+            <exclude>yarn.lock</exclude>
+            <exclude>yarn-error.log</exclude>
+            <exclude>README.md</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>exec-maven-plugin</artifactId>
+      <version>1.2.1</version>
+      <executions>
+        <execution>
+          <id>clean-rmdir</id>
+          <phase>clean</phase>
+          <goals>
+            <goal>exec</goal>
+          </goals>
+          <configuration>
+            <executable>${executable.rmdir}</executable>
+            <workingDirectory>${basedir}</workingDirectory>
+            <commandlineArgs>${args.rm.clean} dist ${project.build.directory} ${nodemodules.dir}</commandlineArgs>
+            <successCodes>
+              <successCode>0</successCode>
+              <successCode>1</successCode>
+              <successCode>2</successCode>
+            </successCodes>
+          </configuration>
+        </execution>
+      </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>linux</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <properties>
+        <envClassifier>linux</envClassifier>
+        <dirsep>/</dirsep>
+        <executable.rmdir>rm</executable.rmdir>
+        <args.rm.clean>-rf</args.rm.clean>
+      </properties>
+    </profile>
+  </profiles>
+</project>

@@ -1,0 +1,287 @@
+/*!
+ *   HORTONWORKS DATAPLANE SERVICE AND ITS CONSTITUENT SERVICES
+ *
+ *   (c) 2016-2018 Hortonworks, Inc. All rights reserved.
+ *
+ *   This code is provided to you pursuant to your written agreement with Hortonworks, which may be the terms of the
+ *   Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *   to distribute this code.  If you do not have a written agreement with Hortonworks or with an authorized and
+ *   properly licensed third party, you do not have any rights to this code.
+ *
+ *   If this code is provided to you under the terms of the AGPLv3:
+ *   (A) HORTONWORKS PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) HORTONWORKS DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *     LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) HORTONWORKS IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *     FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, HORTONWORKS IS NOT LIABLE FOR ANY
+ *     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO,
+ *     DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR UNAVAILABILITY,
+ *     OR LOSS OR CORRUPTION OF DATA.
+ */
+@import "../../../../../styles/variables";
+
+.dss-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 30px;
+
+  .dashboard {
+    width: 100%;
+  }
+
+  .title-container {
+    background: $white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.green {
+  color: $fruit-salad;
+}
+
+.tabs-container {
+  display: block;
+  padding-top: 5px;
+}
+
+.hwx-white-bg {
+  background: #fff;
+}
+
+.flex-grid {
+  display: flex;
+}
+.primary-space {
+  flex-grow: 1;
+}
+.hwx-subtitle {
+  font-size: 16px;
+  color: #333;
+  margin: 5px 0;
+}
+.hwx-secondary {
+  color: #1eb475;
+}
+.hwx-description {
+  margin: 10px 0;
+  font-size: 12px;
+  line-height: 1.432;
+}
+.btn + .btn {
+  margin-left: 7px;
+}
+.btn > i {
+  margin-right: 10px;
+}
+.btn > i + i {
+  margin-right: 0;
+  margin-left: 10px;
+}
+.btn {
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border: 1px solid transparent;
+  padding: 9px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  margin: 0;
+  text-transform: uppercase;
+  height: 34px;
+}
+.btn-circle {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: #eee;
+  color: #666;
+  padding: 3px;
+  vertical-align: middle;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+}
+.hwx-error {
+  color: #EF6162;
+}
+
+
+.tabs > ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+.tabs.menu > ul {
+  margin-bottom: 15px;
+  line-height: 1;
+}
+.tabs > ul > li {
+  list-style:none;
+  cursor: pointer;
+  padding: 10px 20px;
+  background: #f1f2f3;
+  border: 1px solid #d0dad7;
+  border-bottom: none;
+}
+.tabs > ul > li:first-child {
+  border-radius: 4px 0 0 0;
+}
+.tabs.menu > ul > li {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+.tabs.menu > ul > li.active {
+  background: transparent;
+  border-color: #61bb5a;
+}
+
+.grapic-holder {
+  position: relative;
+  height: 83px;
+  overflow: hidden;
+}
+
+.grapic-holder img {
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.grapic-holder .rating {
+  position: absolute;
+  right: 0;
+  top: 14px;
+  white-space: nowrap;
+  color: #666;
+  background: #fff;
+  border-radius: 8px 0 0 8px;
+  min-width: 40px;
+  padding: 5px;
+  text-align: right;
+  box-shadow: 1px 0 2px #ccc;
+}
+
+.flex-summary {
+  border-top: 1px solid #eee;
+}
+
+.flex-grid.animate .flex-side > * {
+  word-wrap: normal;
+  white-space: nowrap;
+}
+
+.flex-summary > div {
+  border-right: 1px solid #eee;
+  padding: 10px;
+  flex-grow: 1;
+}
+
+.flex-summary > div:last-child {
+  border-right: none;
+}
+
+.flex-summary > div.flex-summary-item {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.flex-summary-vertical {
+  border-top: 1px solid #eee;
+}
+
+.flex-summary-vertical .flex-summary-item {
+  padding: 15px;
+  font-size: 12px;
+}
+
+.flex-side-left {
+  margin-right: 10px;
+}
+
+.flex-summary-vertical .flex-summary-item + .flex-summary-item {
+  border-top: 1px solid #eee;
+}
+
+.flex-summary-vertical .key {
+  color: #999;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.value {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.color-tag {
+  padding: 2px 3px;
+  border-radius: 2px;
+  margin: 0px 5px 5px 0px;
+}
+
+.color-b {
+  color: #fff;
+  background: #a089b7;
+}
+
+.color-c {
+  color: #fff;
+  background: #e17361;
+}
+
+
+.marked {
+  color: #fe69a1;
+}
+
+.flex-grid {
+  display: flex;
+}
+.flex-side-left {
+  margin-right: 10px;
+}
+.flex-side-right {
+  overflow:hidden;
+  min-width: 0;
+  width: 0;
+  margin-left: 0;
+  border: none;
+  -webkit-transition: min-width $layout-transition-time ease;
+  -moz-transition: min-width $layout-transition-time ease;
+  -o-transition: min-width $layout-transition-time ease;
+  transition: min-width $layout-transition-time ease;
+  -webkit-font-smoothing: antialiased;
+}
+.showSummary {
+  min-width: 280px;
+  margin-left: 10px;
+}
+
+.flex-main {
+  flex-grow: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+.view-icon {
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+
+  &.lock {
+    font-size: 16px;
+    color: $mine-shaft;
+  }
+}
+.view-icon-lock-disabled {
+  font-size: 16px;
+  color: $mine-shaft;
+}
